@@ -3,5 +3,6 @@ project(ft_containers)
 
 set(CMAKE_CXX_STANDARD 98)
 
-add_executable(ft_containers srcs/main.cpp includes/vector.hpp)
+add_executable(ft_containers srcs/main.cpp includes/vector.hpp test/catch.hpp test/vector_test.cpp test/main.cpp)
 include_directories(includes)
+add_subdirectory(test)

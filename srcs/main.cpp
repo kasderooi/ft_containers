@@ -2,6 +2,8 @@
 #include "vector.hpp"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    while ( 1 ) {
+		std::cout << "Hello, World!" << std::endl;
+	}
     return 0;
 }
