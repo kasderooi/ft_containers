@@ -1,6 +1,8 @@
 #ifndef FT_VECTOR_HPP
 #define FT_VECTOR_HPP
 
+#include <exception>
+
 namespace ft {
 
 	template<class T, class Alloc = std::allocator<T> >
@@ -30,10 +32,10 @@ namespace ft {
 		
 		public:
 		
-			vector( void ) : _size( 0 ), _capacity(0), _alloc(), _vector( NULL ) { return; };
-			vector( unsigned int n ) : _size( n ), _capacity(n), _alloc(), _vector( _alloc.allocate( n ) ) { return; };
+			vector( void ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { return; };
+			vector( unsigned int n ) : _size( n ), _capacity( n ), _alloc(), _vector( _alloc.allocate( n ) ) { return; };
 			//range constructor
-			vector( vector const& original ) : _size( 0 ), _capacity(0), _alloc(), _vector( NULL ) { *this = original; return ; };
+			vector( vector const& original ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { *this = original; return ; };
 			~vector( void ) { _alloc.deallocate( _vector, _capacity ); return; };
 
 			vector<T, Alloc>& operator=( const vector& original ) {
@@ -59,20 +61,36 @@ namespace ft {
 
 			//-------Capacity-------//
 			size_type size( void ) const { return _size; };
-			// max_size()		Return maximum size (public member function )
-			// resize()			Change size (public member function )
+			size_type max_size( void ) const { return _alloc.max_size(); };
+//			void resize( size_type n, value_type val ) {
+//				ft::vector<val> element(n);
+//				ft::iterator it_src = this->begin();
+//				ft::iterator it_dst = element.begin();
+//				for ( size_type i = 0; i < n; i++ ) {
+//					*it_dst = *it_src;
+//					it_dst++;
+//					it_src++;
+//				}
+//				_alloc.destroy( this );
+//				_alloc.deallocate( this );
+//				*this = element;
+//			};
 			size_type capacity( void ) const { return _capacity; };
-			// empty()			Test whether vector is empty (public member function )
+			bool empty( void ) const { if ( _size == 0 ) return true; else return false; };
 			// reserve()		Request a change in capacity (public member function )
 			// shrink_to_fit()	Shrink to fit (public member function )
 
 			//-------Element access-------//
 			reference operator[]( size_type n ) { return _vector[n]; };
 			const_reference operator[]( size_type n ) const { return _vector[n]; };
-			// at()
-			// front()
-			// back()
-			// data()
+			reference at( size_type n ) { if ( n >= _size ) throw std::out_of_range("out of range"); return _vector[n]; };
+			const_reference at( size_type n ) const { if ( n >= _size ) throw std::out_of_range("out of range"); return _vector[n]; };
+			reference front( void ) { return _vector[0]; };
+			const_reference front( void ) const { return _vector[0]; };
+			reference back( void ) { return _vector[_size - 1]; };
+			const_reference back( void ) const { return _vector[_size - 1]; };
+			pointer data( void ) noexcept { return _vector; };
+			const_pointer data( void ) const noexcept { return _vector; };
 
 			//-------Modifiers-------//
 			// assign()
