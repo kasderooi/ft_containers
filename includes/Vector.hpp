@@ -2,6 +2,7 @@
 #define FT_vector_HPP
 
 #include <exception>
+#include "InputIterator.hpp"
 
 namespace ft {
 
@@ -17,7 +18,7 @@ namespace ft {
 			typedef		value_type&			reference;
 			typedef 	const value_type*	const_pointer;
 			typedef 	const value_type&	const_reference;
-			//iterator
+			typedef		typename ft::InputIterator iterator;
 			//const iterator
 			//reverse iterator
 			//const reverse iterator
