@@ -3,15 +3,15 @@
 //
 
 #include "catch.hpp"
-#include "vector.hpp"
+#include "Vector.hpp"
 #include <vector>
 
 #define MAX_VAL 2345
 
 TEST_CASE("Vector constructors, capacity & element access", "[Vector]") {
-	ft::vector<int> ft_first;
+	ft::Vector<int> ft_first;
 	std::vector<int> std_first;
-	ft::vector<int> ft_second(MAX_VAL);
+	ft::Vector<int> ft_second(MAX_VAL);
 	std::vector<int> std_second(MAX_VAL);
 
 	SECTION("Empty capacity") {
@@ -36,7 +36,7 @@ TEST_CASE("Vector constructors, capacity & element access", "[Vector]") {
 		REQUIRE(ft_second.empty() == std_second.empty());
 		REQUIRE(ft_second.max_size() == std_second.max_size());
 	}
-	ft::vector<int> ft_third(ft_second);
+	ft::Vector<int> ft_third(ft_second);
 	std::vector<int> std_third(std_second);
 	ft_first = ft_second;
 	std_first = std_second;

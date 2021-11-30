@@ -1,12 +1,12 @@
-#ifndef FT_VECTOR_HPP
-#define FT_VECTOR_HPP
+#ifndef FT_vector_HPP
+#define FT_vector_HPP
 
 #include <exception>
 
 namespace ft {
 
 	template<class T, class Alloc = std::allocator<T> >
-	class vector {
+	class Vector {
 
 		public:
 
@@ -32,13 +32,13 @@ namespace ft {
 		
 		public:
 		
-			vector( void ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { return; };
-			vector( unsigned int n ) : _size( n ), _capacity( n ), _alloc(), _vector( _alloc.allocate( n ) ) { return; };
+			Vector( void ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { return; };
+			Vector( unsigned int n ) : _size( n ), _capacity( n ), _alloc(), _vector( _alloc.allocate( n ) ) { return; };
 			//range constructor
-			vector( vector const& original ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { *this = original; return ; };
-			~vector( void ) { _alloc.deallocate( _vector, _capacity ); return; };
+			Vector( Vector const& original ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { *this = original; return ; };
+			~Vector( void ) { _alloc.deallocate( _vector, _capacity ); return; };
 
-			vector<T, Alloc>& operator=( const vector& original ) {
+			Vector<T, Alloc>& operator=( const Vector& original ) {
 				_alloc.deallocate( _vector, _capacity );
 				this->_size = original._size;
 				this->_capacity = original._capacity;
@@ -63,7 +63,7 @@ namespace ft {
 			size_type size( void ) const { return _size; };
 			size_type max_size( void ) const { return _alloc.max_size(); };
 //			void resize( size_type n, value_type val ) {
-//				ft::vector<val> element(n);
+//				ft::Vector<val> element(n);
 //				ft::iterator it_src = this->begin();
 //				ft::iterator it_dst = element.begin();
 //				for ( size_type i = 0; i < n; i++ ) {
@@ -112,6 +112,6 @@ namespace ft {
 //-------Non-member function overloads-------//
 //----relational operators----//
 //swap
-//vector<bool>
+//Vector<bool>
 
-#endif //FT_CONTAINERS_FT_VECTOR_HPP
+#endif //FT_CONTAINERS_FT_vector_HPP
