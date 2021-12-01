@@ -1,7 +1,10 @@
-#ifndef FT_ITERATOR_HPP
-#define FT_ITERATOR_HPP
+#ifndef FT_ITERATOR_UTILS_HPP
+#define FT_ITERATOR_UTILS_HPP
 
 namespace ft {
+
+	struct iterator_tag { };
+	struct random_access_iterator_tag { };
 
 	template < class T, class Pointer = T*, class Reference = T&, class Category = ft::iterator_tag >
 	class Iterator {
@@ -27,6 +30,7 @@ namespace ft {
 		virtual ~Iterator( void ) { return; };
 
 	};
+
 }
 
 #endif

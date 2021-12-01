@@ -2,7 +2,7 @@
 #define FT_vector_HPP
 
 #include <exception>
-#include "InputIterator.hpp"
+#include "RandomAccesIterator.hpp"
 
 namespace ft {
 
@@ -18,7 +18,7 @@ namespace ft {
 			typedef		value_type&			reference;
 			typedef 	const value_type*	const_pointer;
 			typedef 	const value_type&	const_reference;
-			typedef		typename ft::InputIterator iterator;
+			typedef	typename ft::RandomAccesIterator< T, T*, T& > iterator;
 			//const iterator
 			//reverse iterator
 			//const reverse iterator
@@ -51,8 +51,9 @@ namespace ft {
 			}
 
 			//-------Iterators-------//
-			// begin() 			Return iterator to beginning (public member function )
-			// end() 			Return iterator to end (public member function )
+			iterator begin( void ) { iterator ret( _vector ); return ret; };
+		//const_iterator begin() const;
+			iterator end( void ) { iterator ret( &_vector[_size] ); return ret; };
 			// rbegin() 		Return reverse iterator to reverse beginning (public member function )
 			// rend() 			Return reverse iterator to reverse end (public member function )
 			// cbegin() 		Return const_iterator to beginning (public member function )
@@ -64,9 +65,9 @@ namespace ft {
 			size_type size( void ) const { return _size; };
 			size_type max_size( void ) const { return _alloc.max_size(); };
 //			void resize( size_type n, value_type val ) {
-//				ft::Vector<val> element(n);
-//				ft::iterator it_src = this->begin();
-//				ft::iterator it_dst = element.begin();
+//				Vector<val> element(n);
+//				iterator it_src = this->begin();
+//				iterator it_dst = element.begin();
 //				for ( size_type i = 0; i < n; i++ ) {
 //					*it_dst = *it_src;
 //					it_dst++;
@@ -90,8 +91,8 @@ namespace ft {
 			const_reference front( void ) const { return _vector[0]; };
 			reference back( void ) { return _vector[_size - 1]; };
 			const_reference back( void ) const { return _vector[_size - 1]; };
-			pointer data( void ) noexcept { return _vector; };
-			const_pointer data( void ) const noexcept { return _vector; };
+			pointer data( void ) { return _vector; };
+			const_pointer data( void ) const { return _vector; };
 
 			//-------Modifiers-------//
 			// assign()
