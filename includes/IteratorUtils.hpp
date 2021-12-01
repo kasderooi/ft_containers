@@ -5,6 +5,7 @@ namespace ft {
 
 	struct iterator_tag { };
 	struct random_access_iterator_tag { };
+	struct reverse_iterator_tag { };
 
 	template < class T, class Pointer = T*, class Reference = T&, class Category = ft::iterator_tag >
 	class Iterator {

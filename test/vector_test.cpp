@@ -13,6 +13,7 @@ TEST_CASE("Vector iterators", "[Vector]") {
 	ft::Vector<int> ft1(MAX_VAL);
 	std::vector<int> std1(MAX_VAL);
 	ft::Vector<int>::iterator it1 = ft1.begin();
+	int i = 0;
 
 	for (std::vector<int>::iterator it2 = std1.begin(); it2 < std1.end(); it2++)
 	{
@@ -32,6 +33,18 @@ TEST_CASE("Vector iterators", "[Vector]") {
 		REQUIRE(std1[MAX_VAL] == *std1.end());
 		REQUIRE(ft1[MAX_VAL] == *ft1.end()--);
 		REQUIRE(std1[MAX_VAL] == *std1.end()--);
+	}
+
+	SECTION("reverse begin/end ++/--") {
+		REQUIRE(*(ft1.rbegin()) == *(std1.rbegin()));
+		REQUIRE(*(++ft1.rbegin()) == *(++std1.rbegin()));
+		REQUIRE(*(ft1.rbegin()++) == *(std1.rbegin()++));
+		REQUIRE(ft1[0] == *--ft1.rend());
+		REQUIRE(std1[0] == *--std1.rend());
+		REQUIRE(ft1[MAX_VAL - 1] == *ft1.rbegin());
+		REQUIRE(std1[MAX_VAL - 1] == *std1.rbegin());
+		REQUIRE(ft1[MAX_VAL - 1] == *ft1.rbegin()--);
+		REQUIRE(std1[MAX_VAL - 1] == *std1.rbegin()--);
 	}
 }
 

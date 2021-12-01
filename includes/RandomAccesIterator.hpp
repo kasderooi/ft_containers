@@ -28,7 +28,7 @@ namespace ft {
 		iterator& operator=( const iterator& original ) { this->_ptr = original._ptr; return (*this); }
 		iterator& operator++( void ) { this->_ptr++; return *this; }
 		iterator operator++( int ) { iterator ret = *this; ++this->_ptr; return ret; }
-		iterator operator++( void ) { this->_ptr++; return this; }
+//		iterator operator++( void ) { this->_ptr++; return this; }
 		iterator& operator--( void ) { this->_ptr--; return *this; }
 		iterator operator--( int ) { iterator ret = *this; --this->_ptr; return ret; }
 		iterator operator+( difference_type n ) { return iterator( this->_ptr + n ); }
@@ -45,7 +45,6 @@ namespace ft {
 		bool operator<( const iterator& subject ) const { return this->_ptr < subject._ptr; }
 		bool operator>( const iterator& subject ) const { return this->_ptr > subject._ptr; }
 		bool operator<=( const iterator& subject ) const { return this->_ptr <= subject._ptr; }
-		bool operator>=( const iterator& subject ) const { return this->_ptr >= subject._ptr; }
 		bool operator>=( const iterator& subject ) const { return this->_ptr >= subject._ptr; }
 
 	};
