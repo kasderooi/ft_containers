@@ -16,6 +16,7 @@ namespace ft {
 		typedef Pointer		pointer;
 		typedef Reference	reference;
 		typedef Category	iterator_category;
+		typedef size_t 		size_type;
 
 		public:
 
@@ -27,18 +28,27 @@ namespace ft {
 		iterator& operator=( const iterator& original ) { this->_ptr = original._ptr; return (*this); }
 		iterator& operator++( void ) { this->_ptr++; return *this; }
 		iterator operator++( int ) { iterator ret = *this; ++this->_ptr; return ret; }
-//			iterator operator++( void ) { this->_ptr++; return this; }
+		iterator operator++( void ) { this->_ptr++; return this; }
 		iterator& operator--( void ) { this->_ptr--; return *this; }
 		iterator operator--( int ) { iterator ret = *this; --this->_ptr; return ret; }
 		iterator operator+( difference_type n ) { return iterator( this->_ptr + n ); }
-		iterator& operator+=( difference_type n ) { this->_ptr += n; return *this; }
+		size_type operator+( iterator n ) { return this->_ptr + n._ptr; }
 		iterator operator-( difference_type n ) { return iterator( this->_ptr - n ); }
+		size_type operator-( iterator n ) { return this->_ptr - n._ptr; }
+		iterator& operator+=( difference_type n ) { this->_ptr += n; return *this; }
 		iterator& operator-=( difference_type n ) { this->_ptr -= n; return *this; }
 		reference operator*( void ) { return *this->_ptr; }
 		pointer operator->( void ) { return this->_ptr; }
 		reference operator[]( difference_type n ) const { return *(*this + n ); }
 		bool operator==( const iterator& subject ) const { return this->_ptr == subject._ptr; }
 		bool operator!=( const iterator& subject ) const { return this->_ptr != subject._ptr; }
+		bool operator<( const iterator& subject ) const { return this->_ptr < subject._ptr; }
+		bool operator>( const iterator& subject ) const { return this->_ptr > subject._ptr; }
+		bool operator<=( const iterator& subject ) const { return this->_ptr <= subject._ptr; }
+		bool operator>=( const iterator& subject ) const { return this->_ptr >= subject._ptr; }
+		bool operator>=( const iterator& subject ) const { return this->_ptr >= subject._ptr; }
+
 	};
 }
+
 #endif
