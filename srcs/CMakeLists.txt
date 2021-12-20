@@ -3,5 +3,5 @@ project(srcs)
 
 set(CMAKE_CXX_STANDARD 98)
 
-add_executable(srcs ../includes/Vector.hpp ../includes/iterator_misfits/InputIterator.hpp)
+add_executable(srcs ../includes/ft_vector.hpp ../includes/iterator_misfits/InputIterator.hpp)
 include_directories(../includes)

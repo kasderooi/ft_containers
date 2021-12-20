@@ -8,7 +8,7 @@
 namespace ft {
 
 	template<class T, class Alloc = std::allocator<T> >
-	class Vector {
+	class vector {
 
 		public:
 
@@ -34,21 +34,32 @@ namespace ft {
 		
 		public:
 		
-			Vector( void ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { return; }
-			Vector( unsigned int n ) : _size( n ), _capacity( n ), _alloc(), _vector( _alloc.allocate( n ) ) { return; }
-			//range constructor
-			Vector( Vector const& original ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { *this = original; return ; }
-			~Vector( void ) { _alloc.deallocate( _vector, _capacity ); return; }
+			vector( void ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { return; }
+			vector( unsigned int n ) : _size( n ), _capacity( n ), _alloc(), _vector( _alloc.allocate( n ) ) { return; }
+			template <class InputIterator>
+			vector ( InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type() ) {
+				_size = last - first;
+				_capacity = _size;
+				_alloc = alloc;
+				_vector = _alloc.allocate( _size );
+				for ( size_type i = 0; i < _size; i++ ) {
+					this->_vector[i] = *first;
+					first++;
+				}
+				return ;
+			}
+			vector( vector const& original ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { *this = original; return ; }
+			~vector( void ) { _alloc.deallocate( _vector, _capacity ); return; }
 
-			Vector<T, Alloc>& operator=( const Vector& original ) {
+			vector<T, Alloc>& operator=(const vector& original ) {
 				_alloc.deallocate( _vector, _capacity );
 				this->_size = original._size;
 				this->_capacity = original._capacity;
 				this->_vector = _alloc.allocate( this->_capacity );
-				for ( unsigned int i = 0; i < this->_size; i++ ){
+				for ( unsigned int i = 0; i < this->_size; i++ ) {
 					this->_vector[i] = original._vector[i]; 
 				}
-				return (*this);
+				return *this;
 			}
 
 			//-------Iterators-------//
@@ -62,25 +73,35 @@ namespace ft {
 			const_reverse_iterator rend( void ) const { const_reverse_iterator ret( _vector ); return ++ret; }
 
 			//-------Capacity-------//
-			size_type size( void ) const { return _size; };
-			size_type max_size( void ) const { return _alloc.max_size(); };
-			void resize( size_type n ) {
-				Vector element(n);
-				iterator it_src = this->begin();
-				iterator it_dst = element.begin();
-				for ( size_type i = 0; i < n; i++ ) {
-					*it_dst = *it_src;
-					it_dst++;
-					it_src++;
+			size_type size( void ) const { return _size; }
+			size_type max_size( void ) const { return _alloc.max_size(); }
+			void resize( size_type n, value_type val = value_type() ) {
+				if ( n > _size ) {
+					reserve( n );
+					for ( size_type i = _size; i < n; i++ )
+						this->_alloc.construct( &this->_vector[i], val );
+				} else if ( n < _size ) {
+					for ( size_type i = n; i < _size; i++ )
+						this->_alloc.destroy( &this->_vector[i] );
 				}
-				_alloc.destroy( this );
-				_alloc.deallocate( this );
-				*this = element;
-			};
+				_size = n;
+			}
 			size_type capacity( void ) const { return _capacity; }
 			bool empty( void ) const { if ( _size == 0 ) return true; else return false; }
-			// reserve()		Request a change in capacity (public member function )
-			// shrink_to_fit()	Shrink to fit (public member function )
+			void reserve( size_type n ) {
+				if ( n <= this->_capacity )
+					return ;
+				if ( n > _alloc.max_size() )
+					throw std::length_error( "allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size" );
+				pointer dest = this->_alloc.allocate( n );
+				for ( size_type i = 0; i < this->_size; i++ ) {
+					this->_alloc.construct( &dest[i], this->_vector[i] );
+					this->_alloc.destroy( &this->_vector[i] );
+				}
+				this->_alloc.deallocate( this->_vector, this->_capacity );
+				this->_vector = dest;
+				this->_capacity = n;
+			}
 
 			//-------Element access-------//
 			reference operator[]( size_type n ) { return _vector[n]; }
@@ -95,7 +116,13 @@ namespace ft {
 			const_pointer data( void ) const { return _vector; }
 
 			//-------Modifiers-------//
-			// assign()
+//			template <class InputIterator>
+//			void assign ( InputIterator first, InputIterator last ) {
+//
+//			}
+//			void assign ( size_type n, const value_type& val ) {
+//
+//			}
 			// push_back()
 			// pop_back()
 			// insert()
@@ -114,6 +141,6 @@ namespace ft {
 //-------Non-member function overloads-------//
 //----relational operators----//
 //swap
-//Vector<bool>
+//vector<bool>
 
 #endif //FT_CONTAINERS_FT_vector_HPP

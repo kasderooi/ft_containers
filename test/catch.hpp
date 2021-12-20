@@ -3728,7 +3728,7 @@ namespace Matchers {
             std::vector<T, AllocComp> const& m_target;
         };
 
-    } // namespace Vector
+    } // namespace vector
 
     // The following functions create the actual matcher objects.
     // This allows the types to be inferred
