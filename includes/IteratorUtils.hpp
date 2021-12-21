@@ -36,26 +36,11 @@ namespace ft {
 		typedef random_access_iterator_tag	iterator_category;
 	};
 
-
 	template < bool cond, class T = void > struct enable_if { };
 	template < class T > struct enable_if< true, T > { typedef T type; };
-//
-//	template <class T>
-//	struct has_iterator_category
-//	{
-//		private:
-//		struct __two {char __lx; char __lxx;};
-//		template <class Up> static __two __test(...);
-//		template <class Up> static char __test(typename Up::iterator_category* = 0);
-//		public:
-//		static const bool value = sizeof(__test<T>(0)) == 1;
-//	};
-//
-//	template <class T, class Up, bool = has_iterator_category<iterator_traits<T> >::value>
-//	struct has_iterator_category_convertible_to
-//			: public integral_constant<bool, is_convertible<typename iterator_traits<T>::iterator_category, Up>::value>
-//	{};
 
+	template < class T, class Up = void > struct is_same { static const bool value = false; };
+	template < class T > struct is_same< T, T > { static const bool value = true; };
 
 }
 

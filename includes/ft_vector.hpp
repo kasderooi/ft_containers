@@ -7,7 +7,7 @@
 
 namespace ft {
 
-	template<class T, class Alloc = std::allocator<T> >
+	template< class T, class Alloc = std::allocator<T> >
 	class vector {
 
 		public:
@@ -117,7 +117,7 @@ namespace ft {
 
 			//-------Modifiers-------//
 			template < class InputIterator >
-			void assign ( InputIterator first, InputIterator last, typename enable_if<is_input_iterator<InputIterator>::value>::type = 0 ) { //typename enable_if<dynamic_cast<InputIterator>(first) != nullptr, int>::type* = 0 )
+			void assign ( InputIterator first, InputIterator last, typename ft::enable_if<!is_same<InputIterator, value_type>::value, int>::type = 0 ) { //typename ft::enable_if<is_same<typename ft::iterator_traits<InputIterator>::iterator_category , random_access_iterator_tag>::value, int>::type = 0
 				resize( last - first );
 				for ( size_type i = 0; first < last; i++ ) {
 					_vector[i] = *first;

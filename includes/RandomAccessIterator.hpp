@@ -56,12 +56,6 @@ namespace ft {
 
 	};
 
-	template <class T, T v>
-	struct is_input_iterator {
-		static const T value = v;
-		typedef T value_type;
-		typedef
-	};
 }
 
 #endif

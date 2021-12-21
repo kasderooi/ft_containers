@@ -209,8 +209,8 @@ TEST_CASE("vector<int> modifiers", "[vector]") {
 		ft_first[i] = i;
 		std_first[i] = i;
 	}
-//	ft_second.assign( ft_first.begin(), ft_first.end() );
-//	std_second.assign( std_first.begin(), std_first.end() );
+	ft_second.assign( ft_first.begin(), ft_first.end() );
+	std_second.assign( std_first.begin(), std_first.end() );
 	SECTION("after assign") {
 		REQUIRE(ft_second.capacity() == std_second.capacity());
 		REQUIRE(ft_second.size() == std_second.size());
@@ -219,8 +219,16 @@ TEST_CASE("vector<int> modifiers", "[vector]") {
 		REQUIRE(ft_second.back() == std_second.back());
 		REQUIRE(*ft_second.data() == *std_second.data());
 	}
-//	ft_first.assign( 42, 33 );
-//	std_second.assign(42, 33 );
+	ft_first.assign( 42, 33 );
+	std_second.assign(42, 33 );
+	SECTION("after assign") {
+		REQUIRE(ft_second.capacity() == std_second.capacity());
+		REQUIRE(ft_second.size() == std_second.size());
+		REQUIRE(ft_second.front() == std_second.front());
+		REQUIRE(ft_second.at(23) == std_second.at(23));
+		REQUIRE(ft_second.back() == std_second.back());
+		REQUIRE(*ft_second.data() == *std_second.data());
+	}
 }
 
 TEST_CASE("vector<string> constructors, capacity & element access", "[vector]") {
