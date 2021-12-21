@@ -169,7 +169,7 @@ TEST_CASE("vector<int> constructors, capacity & element access", "[vector]") {
 	}
 	SECTION("at") {
 		REQUIRE(ft_first.at(0) == std_first.at(0));
-		REQUIRE(ft_first.at(99) == std_first.at(99));
+		REQUIRE(ft_first.at(97) == std_first.at(97));
 		REQUIRE_THROWS_AS(ft_first.at(100), std::out_of_range);
 		REQUIRE_THROWS_AS(std_first.at(100), std::out_of_range);
 	}
@@ -188,7 +188,7 @@ TEST_CASE("vector<int> constructors, capacity & element access", "[vector]") {
 	}
 	SECTION("at") {
 		REQUIRE(ft_first.at(0) == std_first.at(0));
-		REQUIRE(ft_first.at(199) == std_first.at(199));
+		REQUIRE(ft_first.at(109) == std_first.at(109));
 		REQUIRE_THROWS_AS(ft_first.at(1010), std::out_of_range);
 		REQUIRE_THROWS_AS(std_first.at(1010), std::out_of_range);
 	}
@@ -197,6 +197,30 @@ TEST_CASE("vector<int> constructors, capacity & element access", "[vector]") {
 		REQUIRE(ft_first.back() == std_first.back());
 		REQUIRE(*ft_first.data() == *std_first.data());
 	}
+}
+
+TEST_CASE("vector<int> modifiers", "[vector]") {
+	ft::vector<int> ft_first(10);
+	std::vector<int> std_first(10);
+	ft::vector<int> ft_second(21);
+	std::vector<int> std_second(21);
+
+	for ( int i = 0; i < 10; i++ ) {
+		ft_first[i] = i;
+		std_first[i] = i;
+	}
+//	ft_second.assign( ft_first.begin(), ft_first.end() );
+//	std_second.assign( std_first.begin(), std_first.end() );
+	SECTION("after assign") {
+		REQUIRE(ft_second.capacity() == std_second.capacity());
+		REQUIRE(ft_second.size() == std_second.size());
+		REQUIRE(ft_second.front() == std_second.front());
+		REQUIRE(ft_second.at(5) == std_second.at(5));
+		REQUIRE(ft_second.back() == std_second.back());
+		REQUIRE(*ft_second.data() == *std_second.data());
+	}
+//	ft_first.assign( 42, 33 );
+//	std_second.assign(42, 33 );
 }
 
 TEST_CASE("vector<string> constructors, capacity & element access", "[vector]") {

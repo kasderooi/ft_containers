@@ -2,7 +2,7 @@
 #define FT_vector_HPP
 
 #include <exception>
-#include "RandomAccesIterator.hpp"
+#include "RandomAccessIterator.hpp"
 #include "ReverseIterator.hpp"
 
 namespace ft {
@@ -19,8 +19,8 @@ namespace ft {
 			typedef		value_type&			reference;
 			typedef 	const value_type*	const_pointer;
 			typedef 	const value_type&	const_reference;
-			typedef	typename ft::RandomAccesIterator< T, T*, T& > iterator;
-			typedef	typename ft::RandomAccesIterator< T, const T*, const T& > const_iterator;
+			typedef	typename ft::RandomAccessIterator< T, T*, T& > iterator;
+			typedef	typename ft::RandomAccessIterator< T, const T*, const T& > const_iterator;
 			typedef	typename ft::ReverseIterator< T, T*, T& > reverse_iterator;
 			typedef	typename ft::ReverseIterator< T, const T*, const T& > const_reverse_iterator;
 			//difference type
@@ -43,7 +43,7 @@ namespace ft {
 				_alloc = alloc;
 				_vector = _alloc.allocate( _size );
 				for ( size_type i = 0; i < _size; i++ ) {
-					this->_vector[i] = *first;
+					_vector[i] = *first;
 					first++;
 				}
 				return ;
@@ -53,11 +53,11 @@ namespace ft {
 
 			vector<T, Alloc>& operator=(const vector& original ) {
 				_alloc.deallocate( _vector, _capacity );
-				this->_size = original._size;
-				this->_capacity = original._capacity;
-				this->_vector = _alloc.allocate( this->_capacity );
-				for ( unsigned int i = 0; i < this->_size; i++ ) {
-					this->_vector[i] = original._vector[i]; 
+				_size = original._size;
+				_capacity = original._capacity;
+				_vector = _alloc.allocate( _capacity );
+				for ( unsigned int i = 0; i < _size; i++ ) {
+					_vector[i] = original._vector[i];
 				}
 				return *this;
 			}
@@ -79,28 +79,28 @@ namespace ft {
 				if ( n > _size ) {
 					reserve( n );
 					for ( size_type i = _size; i < n; i++ )
-						this->_alloc.construct( &this->_vector[i], val );
+						_alloc.construct( &_vector[i], val );
 				} else if ( n < _size ) {
 					for ( size_type i = n; i < _size; i++ )
-						this->_alloc.destroy( &this->_vector[i] );
+						_alloc.destroy( &_vector[i] );
 				}
 				_size = n;
 			}
 			size_type capacity( void ) const { return _capacity; }
 			bool empty( void ) const { if ( _size == 0 ) return true; else return false; }
 			void reserve( size_type n ) {
-				if ( n <= this->_capacity )
+				if ( n <= _capacity )
 					return ;
 				if ( n > _alloc.max_size() )
 					throw std::length_error( "allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size" );
-				pointer dest = this->_alloc.allocate( n );
-				for ( size_type i = 0; i < this->_size; i++ ) {
-					this->_alloc.construct( &dest[i], this->_vector[i] );
-					this->_alloc.destroy( &this->_vector[i] );
+				pointer dest = _alloc.allocate( n );
+				for ( size_type i = 0; i < _size; i++ ) {
+					_alloc.construct( &dest[i], _vector[i] );
+					_alloc.destroy( &_vector[i] );
 				}
-				this->_alloc.deallocate( this->_vector, this->_capacity );
-				this->_vector = dest;
-				this->_capacity = n;
+				_alloc.deallocate( _vector, _capacity );
+				_vector = dest;
+				_capacity = n;
 			}
 
 			//-------Element access-------//
@@ -116,21 +116,31 @@ namespace ft {
 			const_pointer data( void ) const { return _vector; }
 
 			//-------Modifiers-------//
-//			template <class InputIterator>
-//			void assign ( InputIterator first, InputIterator last ) {
-//
-//			}
-//			void assign ( size_type n, const value_type& val ) {
-//
-//			}
-			// push_back()
-			// pop_back()
+			template < class InputIterator >
+			void assign ( InputIterator first, InputIterator last, typename enable_if<is_input_iterator<InputIterator>::value>::type = 0 ) { //typename enable_if<dynamic_cast<InputIterator>(first) != nullptr, int>::type* = 0 )
+				resize( last - first );
+				for ( size_type i = 0; first < last; i++ ) {
+					_vector[i] = *first;
+					first++;
+				}
+			}
+			void assign ( size_type n, const value_type& val ) {
+					resize( n );
+					for ( size_type i = 0; i < n; i++ ) {
+						_vector[i] = val;
+					}
+				}
+			void push_back( const value_type& val ) {
+					if ( _size == _capacity )
+						reserve( 2 * _size );
+					_alloc.construct( &_vector[_size], val );
+					_size++;
+			}
+			void pop_back( void ) { _size--; _alloc.destroy( &_vector[_size] ); }
 			// insert()
 			// erase()
 			// swap()
 			// clear()
-			// emplace()
-			// emplace_back()
 
 			//-------Allocator-------//
 			allocator_type get_allocator( void ) const { return _alloc; }

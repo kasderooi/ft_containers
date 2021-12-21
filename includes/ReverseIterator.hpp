@@ -6,7 +6,7 @@
 namespace ft {
 
 	template < class T, class Pointer = T*, class Reference = T&, class Category = ft::reverse_iterator_tag >
-	class ReverseIterator : public Iterator< T, T*, T& > {
+	class ReverseIterator {
 
 		public:
 
@@ -18,11 +18,15 @@ namespace ft {
 			typedef Category	iterator_category;
 			typedef size_t 		size_type;
 
+		private :
+
+			pointer	_ptr;
+
 		public:
 
-			ReverseIterator( void ) : Iterator< T, T*, T& >( NULL ) { return; }
-			ReverseIterator( pointer ptr ) : Iterator< T, T*, T& >( ptr ) { return; }
-			ReverseIterator( const iterator& original ) : Iterator< T, T*, T& >( original ) { return; }
+			ReverseIterator( void ) : _ptr( NULL ) { return; }
+			ReverseIterator( pointer ptr ) : _ptr( ptr ) { return; }
+			ReverseIterator( const iterator& original ) : _ptr( original._ptr ) { return; }
 			~ReverseIterator( void ) { return; }
 
 			iterator& operator=( const iterator& original ) { this->_ptr = original._ptr; return (*this); }
