@@ -42,6 +42,14 @@ namespace ft {
 	template < class T, class Up = void > struct is_same { static const bool value = false; };
 	template < class T > struct is_same< T, T > { static const bool value = true; };
 
+	template <class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type distance(InputIterator first, InputIterator last ) {
+		typename iterator_traits<InputIterator>::difference_type diff(0);
+		for (; first != last; ++first)
+			++diff;
+		return diff;
+	}
+
 }
 
 #endif
