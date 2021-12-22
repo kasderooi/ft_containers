@@ -39,19 +39,16 @@ namespace ft {
 					_size( 0 ), _capacity( 0 ), _alloc( alloc ), _vector( NULL ) { return; }
 			vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type() ) :
 					_size( n ), _capacity( n ), _alloc( alloc ), _vector( _alloc.allocate( _capacity ) ) {
-				for ( size_type i = 0; i < _size; i++ ) {
+				for ( size_type i = 0; i < _size; i++ )
 					_alloc.construct( &_vector[i], val );
-				}
 				return;
 			}
 			template <class InputIterator>
 			vector ( InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 					 typename ft::enable_if<!is_same<InputIterator, value_type>::value, int>::type = 0 ) :
 					_size( last - first ), _capacity( _size ), _alloc( alloc ), _vector( _alloc.allocate( _capacity ) ) {
-				for ( size_type i = 0; i < _size; i++ ) {
-					_alloc.construct( &_vector[i], *first );
-					first++;
-				}
+				for ( size_type i = 0; i < _size; i++ )
+					_alloc.construct( &_vector[i], *first++ );
 				return ;
 			}
 			vector( vector const& original ) : _size( 0 ), _capacity( 0 ), _alloc(), _vector( NULL ) { *this = original; return ; }
@@ -180,8 +177,7 @@ namespace ft {
 				size_type index = position - begin();
 				do {
 					_vector[index] = _vector[index + 1];
-					index++;
-				} while ( index < _size - 1 );
+				} while ( ++index < _size - 1 );
 				_alloc.destroy( &_vector[index] );
 				_size--;
 				return position;
@@ -191,12 +187,10 @@ namespace ft {
 				size_type n = last - first;
 				do {
 					_vector[index] = _vector[index + n];
-					index++;
-				} while ( index + n < _size );
+				} while ( ++index + n < _size );
 				do {
 					_alloc.destroy( &_vector[index] );
-					index++;
-				} while ( index < _size );
+				} while ( ++index < _size );
 				_size -= n;
 				return last;
 			}
