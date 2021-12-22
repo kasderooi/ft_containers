@@ -187,7 +187,7 @@ namespace ft {
 				size_type n = last - first;
 				do {
 					_vector[index] = _vector[index + n];
-				} while ( ++index + n < _size );
+				} while ( ++index < _size - n );
 				do {
 					_alloc.destroy( &_vector[index] );
 				} while ( ++index < _size );
