@@ -40,7 +40,7 @@ namespace ft {
 			vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type() ) :
 					_size( n ), _capacity( n ), _alloc( alloc ), _vector( _alloc.allocate( _capacity ) ) {
 				for ( size_type i = 0; i < _size; i++ ) {
-					_vector[i] = val;
+					_alloc.construct( &_vector[i], val );
 				}
 				return;
 			}
@@ -49,7 +49,7 @@ namespace ft {
 					 typename ft::enable_if<!is_same<InputIterator, value_type>::value, int>::type = 0 ) :
 					_size( last - first ), _capacity( _size ), _alloc( alloc ), _vector( _alloc.allocate( _capacity ) ) {
 				for ( size_type i = 0; i < _size; i++ ) {
-					_vector[i] = *first;
+					_alloc.construct( &_vector[i], *first );
 					first++;
 				}
 				return ;
@@ -59,13 +59,15 @@ namespace ft {
 
 	//-------Assignment Operator-------//
 			vector<T, Alloc>& operator=(const vector& original ) {
+				for ( int i = 0; i < _size; i++ )
+					_alloc.destroy( &_vector[i] );
 				_alloc.deallocate( _vector, _capacity );
+				_alloc = original._alloc;
 				_size = original._size;
 				_capacity = original._capacity;
 				_vector = _alloc.allocate( _capacity );
-				for ( unsigned int i = 0; i < _size; i++ ) {
-					_vector[i] = original._vector[i];
-				}
+				for ( unsigned int i = 0; i < _size; i++ )
+					_alloc.construct( &_vector[i], original._vector[i]);
 				return *this;
 			}
 
