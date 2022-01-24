@@ -209,8 +209,7 @@ namespace ft {
 				this->_size = bufSize;
 			}
 			void clear( void ) {
-				for ( int i = 0; i < _size; i++ )
-					_alloc.destroy( &_vector[i] );
+				_alloc.destroy( _vector );
 				_size = 0;
 			}
 
@@ -219,7 +218,7 @@ namespace ft {
 
 	};
 
-	//----relational operators----//
+	//-------Non-member function overloads-------//
 	template < class T, class Alloc >
 	bool operator==( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs ) {
 		if ( lhs.size() != rhs.size() )
@@ -231,10 +230,7 @@ namespace ft {
 	}
 	template < class T, class Alloc >
 	bool operator!=( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs ) {
-		if ( lhs == rhs )
-			return false;
-		return true;
-	}
+		if ( lhs == rhs ) return false; return true; }
 	template < class T, class Alloc >
 	bool operator<( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs) {
 		for ( size_t i = 0; i < lhs.size() && i < rhs.size(); i++ ) {
@@ -248,22 +244,14 @@ namespace ft {
 		return false;
 	}
 	template < class T, class Alloc >
-	bool operator<=( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs) {
-		return !( rhs < lhs );
-	}
+	bool operator<=( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs) { return !( rhs < lhs ); }
 	template < class T, class Alloc >
-	bool operator>( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs) {
-		return ( rhs < lhs );
-	}
+	bool operator>( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs) { return ( rhs < lhs ); }
 	template < class T, class Alloc >
-	bool operator>=( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs) {
-		return !( lhs < rhs );
-	}
-	//-------Non-member function overloads-------//
+	bool operator>=( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs) { return !( lhs < rhs ); }
+
 	template < class T, class Alloc >
-	void swap( vector< T, Alloc >& x, vector< T, Alloc >& y ) {
-		x.swap( y );
-	};
+	void swap( vector< T, Alloc >& x, vector< T, Alloc >& y ) { x.swap( y ); };
 }
 
 #endif //FT_CONTAINERS_FT_vector_HPP
