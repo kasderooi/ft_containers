@@ -33,6 +33,7 @@ namespace ft {
 			mapped_type		_type;
 			allocator_type	_alloc;
 			pointer 		_map;
+			size_type		_height;
 
 		public:
 
