@@ -136,11 +136,11 @@ namespace ft {
 			}
 			void push_back( const value_type& val ) {
 				if ( _size == _capacity ) {
-                    if ( _size == 0 )
-                        reserve( 1 );
-                    else
-                        reserve( 2 * _size );
-                }
+					if ( _size == 0 )
+						reserve( 1 );
+					else
+						reserve( 2 * _size );
+				}
 				_alloc.construct( &_vector[_size], val );
 				_size++;
 			}
@@ -160,9 +160,9 @@ namespace ft {
 				difference_type index( 0 ), diff = distance( position, end() );
 				size_type n = last - first;
 				if ( _capacity > 0 )
-				    reserve( _size + n > _capacity ? 2 * _capacity : _size );
+					reserve( _size + n > _capacity ? 2 * _capacity : _size );
 				else
-				    reserve( n );
+					reserve( n );
 				resize( _size + n );
 				iterator it = end() - 1;
 				while ( index++ < diff )
@@ -172,10 +172,10 @@ namespace ft {
 			}
 			void insert( iterator position, size_type n, const value_type& val ) {
 				difference_type index( 0 ), diff = distance( position, end() );
-                if ( _capacity > 0 )
-				    reserve( _size + n > _capacity ? 2 * _capacity : _size );
-                else
-                    reserve( n );
+				if ( _capacity > 0 )
+					reserve( _size + n > _capacity ? 2 * _capacity : _size );
+				else
+					reserve( n );
 				resize( _size + n );
 				iterator it = end() - 1;
 				while ( index++ < diff )
