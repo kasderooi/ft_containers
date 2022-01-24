@@ -37,7 +37,18 @@ namespace ft {
 
 	};
     //-------Non-member function overloads-------//
-
+    template <class T, class Container>
+    bool operator==( const stack<T,Container>& lhs, const stack<T,Container>& rhs ) { return lhs == rhs; }
+    template <class T, class Container>
+    bool operator!=( const stack<T,Container>& lhs, const stack<T,Container>& rhs ) { return lhs != rhs; }
+    template <class T, class Container>
+    bool operator<( const stack<T,Container>& lhs, const stack<T,Container>& rhs ) { return lhs < rhs; }
+    template <class T, class Container>
+    bool operator<=( const stack<T,Container>& lhs, const stack<T,Container>& rhs ) { return lhs <= rhs; }
+    template <class T, class Container>
+    bool operator>( const stack<T,Container>& lhs, const stack<T,Container>& rhs ) { return lhs > rhs; }
+    template <class T, class Container>
+    bool operator>=( const stack<T,Container>& lhs, const stack<T,Container>& rhs ) { return lhs >= rhs; }
 }
 
 #endif //FT_CONTAINERS_FT_STACK_HPP
