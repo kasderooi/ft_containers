@@ -1,6 +1,8 @@
 #ifndef FT_STACK_HPP
 #define FT_STACK_HPP
 
+#include <deque>
+
 namespace ft {
 
 	template< class T, class Container = std::deque<T> >
@@ -21,7 +23,21 @@ namespace ft {
 	//-------(De-)Constructors-------//
 			explicit stack ( const container_type& ctnr = container_type() ) : _ctnr( ctnr ) { return; }
 
+    //-------Capacity-------//
+			bool empty( void ) const { return _ctnr.empty(); }
+			size_type size( void ) const { return _ctnr.size(); }
+
+    //-------Element access-------//
+			value_type& top( void ) { return _ctnr.back(); }
+			const value_type& top( void ) const { return _ctnr.back(); }
+
+    //-------Modifiers-------//
+            void push( const value_type& val ) { _ctnr.push_back( val ); }
+            void pop( void ) { _ctnr.pop_back(); }
+
 	};
+    //-------Non-member function overloads-------//
+
 }
 
 #endif //FT_CONTAINERS_FT_STACK_HPP
