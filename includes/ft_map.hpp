@@ -33,7 +33,7 @@ namespace ft {
 //			typedef	typename ft::BidirectionalIterator< T, T*, T& > reverse_iterator;
 //			typedef	typename ft::BidirectionalIterator< T, const T*, const T& > const_reverse_iterator;
 
-		class value_compare : public binary_function<value_type, value_type, bool>
+		class value_compare : public std::binary_function<value_type, value_type, bool>
 		{
 			friend class map;
 			protected:
