@@ -35,7 +35,7 @@ namespace ft{
 		public:
 
 			//-------(De-)Constructors-------//
-			vector( const allocator_type &alloc = allocator_type()) :
+			vector( const allocator_type &alloc = allocator_type() ) :
 					_size( 0 ), _capacity( 0 ), _alloc( alloc ), _vector( NULL ){ return; }
 
 			vector( size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) :
@@ -48,7 +48,7 @@ namespace ft{
 			template< class InputIterator >
 			vector( InputIterator first, InputIterator last, const allocator_type &alloc = allocator_type(),
 					typename ft::enable_if< !is_same< InputIterator, value_type >::value, int >::type = 0 ) :
-					_size( last - first ), _capacity( _size ), _alloc( alloc ), _vector( _alloc.allocate( _capacity )){
+					_size( last - first ), _capacity( _size ), _alloc( alloc ), _vector( _alloc.allocate( _capacity ) ){
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.construct( &_vector[i], *first++ );
 				return;

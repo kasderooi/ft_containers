@@ -2,6 +2,8 @@
 #define AVLTREE_HPP
 
 #include <algorithm>
+#define LEFT 0
+#define RIGHT 1
 
 namespace ft{
 
@@ -12,6 +14,7 @@ namespace ft{
 
 			typedef Pair value_type;
 			typedef size_t size_type;
+			typedef std::allocator< Pair > allocator_type;
 			typedef AVLtree *pointer;
 			typedef AVLtree &reference;
 			typedef const AVLtree *const_pointer;
@@ -20,77 +23,83 @@ namespace ft{
 		private:
 
 			value_type _input;
-			size_type _balance;
+			size_type _height;
+			pointer _parent;
 			pointer _left;
 			pointer _right;
 
 		public:
 
 			//-------(De-)Constructors-------//
-			AVLtree( value_type input ) : _input( input ), _balance( 0 ), _left( NULL ), _right( NULL ){ return; }
+			AVLtree( void ) : _input( 0 ), _height( 1 ), _parent(NULL), _left( NULL ), _right( NULL ){ return; }
+
+			AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent(NULL), _left( NULL ), _right( NULL ){ return; }
 
 			~AVLtree( void ){ return; }
 
+			AVLtree< Pair >& operator=( const AVLtree &original ){
+				_input = original._input;
+				_height = original._height;
+				_parent = original._parent;
+				_left = original._left;
+				_right = original._right;
+			}
+
 			//-------Rotators-------//
-			pointer left_rotation( pointer node ){
-				pointer tmp;
-				tmp = node->left;
-				node->left = tmp->right;
-				tmp->right = node;
-				return tmp;
+			pointer left_rotation( void ){
+				_right->_parent = _parent;
+				_parent = _right;
+				_right = _parent->_left;
+				_parent->_left = this;
+				_height = std::max( _left->_height, _right->_height );
+				_parent->_height = std::max( _left->_height, _right->_height );
+				return _parent;
 			}
 
-			pointer right_rotation( pointer node ){
-				pointer tmp;
-				tmp = node->right;
-				node->right = tmp->left;
-				tmp->left = node;
-				return tmp;
-			}
-
-			pointer leftright_rotation( pointer node ){
-				node->left = right_rotation( node->left );
-				return left_rotation( node );
-			}
-
-			pointer rightleft_rotation( pointer node ){
-				node->right = left_rotation( node->right );
-				return node;
+			pointer right_rotation( void ){
+				_left->_parent = _parent;
+				_parent = _left;
+				_left = _parent->_right;
+				_parent->_right = this;
+				_height = std::max( _left->_height, _right->_height );
+				_parent->_height = std::max( _left->_height, _right->_height );
+				return _parent;
 			}
 
 			//-------Capacity-------//
-			size_type height( pointer node ){
-				size_type ret = 0;
-				if ( node != NULL ){
-					ret = max( height( node->left ), height( node->right ));
-					ret++;
-				}
-				return ret;
-			}
-
-			size_type difference( pointer node ){ return height( node->left ) - height( node->right ); }
-
-			pointer balance( pointer node ){
-				size_type dif = difference( node );
-				if ( dif > 1 ){                            // left heavy
-					if ( difference( node->left ) > 0 )
-						node = left_rotation( node );
-					else
-						node = leftright_rotation( node );
-				}else if ( dif < -1 ){                    // right heavy
-					if ( difference( node->right ) > 0 )
-						node = rightleft_rotation( node );
-					else
-						node = right_rotation( node );
-				}
-				return node;
+			size_type difference( void ){
+				if ( !_left && !_right )
+					return 0;
+				if ( !_left )
+					return _right->_height;
+				if ( !_right )
+					return _left->_height;
+				return _left->_height - _right->_height;
 			}
 
 			//-------Modifiers-------//
-			pointer insert( pointer node, value_type input ){
-				if ( !node ){
-					node =
-				}
+			void insert( pointer node ){
+				size_type difference;
+
+				if ( node->input.first > this->_input->_first ){
+					if ( _right )
+						_right->insert( node );
+					else{
+						_right = node;
+						node->_parent = this;
+					}
+				} else if ( node->_input->_first < this->_input->_first ){
+					if ( _left )
+						_left->insert( node );
+					else{
+						_left = node;
+						node->_parent = this;
+					}
+				} else
+					return;
+				_height = 1 + std::max( _left->_height, _right->_height );
+				difference = this->difference();
+				if ( difference > 1 && )
 			}
 
 	};

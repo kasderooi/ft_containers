@@ -3,57 +3,63 @@
 
 #include <deque>
 
-namespace ft {
+namespace ft{
 
-	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< std::pair< const Key,T > > >
-	class map {
+	template< class Key, class T, class Compare = std::less< Key >, class Alloc = std::allocator< std::pair< const Key, T > > >
+	class map{
 
 		public:
 
-			typedef		Key						key_type;
-			typedef		T						mapped_type;
-			typedef		std::pair<const Key, T>	value_type;
-			typedef		Compare					key_compare;
+			typedef Key key_type;
+			typedef T mapped_type;
+			typedef std::pair< const Key, T > value_type;
+			typedef Compare key_compare;
 			//typedef	 nestedfunctionclass				value_compare;
-			typedef		Alloc					allocator_type;
+			typedef Alloc allocator_type;
 //			typedef		value_type&				reference;
 //			typedef		const value_type&		const_reference;
 //			typedef		value_type*				pointer;
 //			typedef		const value_type*		const_pointer;
 //			typedef		size_t					size_type;
 //			typedef		ptrdiff_t 				difference_type;
-			typedef typename allocator_type::reference       reference;
+			typedef typename allocator_type::reference reference;
 			typedef typename allocator_type::const_reference const_reference;
-			typedef typename allocator_type::pointer         pointer;
-			typedef typename allocator_type::const_pointer   const_pointer;
-			typedef typename allocator_type::size_type       size_type;
+			typedef typename allocator_type::pointer pointer;
+			typedef typename allocator_type::const_pointer const_pointer;
+			typedef typename allocator_type::size_type size_type;
 			typedef typename allocator_type::difference_type difference_type;
 //			typedef	typename ft::BidirectionalIterator< T, T*, T& > iterator;
 //			typedef	typename ft::BidirectionalIterator< T, const T*, const T& > const_iterator;
 //			typedef	typename ft::BidirectionalIterator< T, T*, T& > reverse_iterator;
 //			typedef	typename ft::BidirectionalIterator< T, const T*, const T& > const_reverse_iterator;
 
-		class value_compare : public std::binary_function<value_type, value_type, bool>
-		{
-			friend class map;
-			protected:
-			key_compare comp;
+			class value_compare : public std::binary_function< value_type, value_type, bool >{
 
-			value_compare(key_compare c);
-			public:
-			bool operator()(const value_type& x, const value_type& y) const;
-		};
+				public:
+
+					friend class map;
+
+				protected:
+
+					key_compare comp;
+
+					value_compare( key_compare c );
+
+				public:
+
+					bool operator()( const value_type &x, const value_type &y ) const;
+			};
 
 		private:
 
-			allocator_type	_alloc;
-			pointer 		_map;
-			size_type		_size;
-			size_type		_capacity;
+			allocator_type _alloc;
+			pointer _map;
+			size_type _size;
+			size_type _capacity;
 
 		public:
 
-	//-------(De-)Constructors-------//
+			//-------(De-)Constructors-------//
 //			map()
 //			noexcept(
 //			is_nothrow_default_constructible<allocator_type>::value &&
@@ -88,7 +94,7 @@ namespace ft {
 //			is_nothrow_move_assignable<key_compare>::value);
 //			map& operator=(initializer_list<value_type> il);
 
-	//-------iterators-------//
+			//-------iterators-------//
 //			iterator begin() noexcept;
 //			const_iterator begin() const noexcept;
 //			iterator end() noexcept;
@@ -104,16 +110,16 @@ namespace ft {
 //			const_reverse_iterator crbegin() const noexcept;
 //			const_reverse_iterator crend()   const noexcept;
 
-	//-------Capacity-------//
+			//-------Capacity-------//
 //			bool      empty()    const noexcept;
 //			size_type size()     const noexcept;
 //			size_type max_size() const noexcept;
 
-	//-------Element access-------//
+			//-------Element access-------//
 //			mapped_type& operator[](const key_type& k);
 //			mapped_type& operator[](key_type&& k);
 
-	//-------Modifiers-------//
+			//-------Modifiers-------//
 //			template <class... Args>
 //			pair<iterator, bool> emplace(Args&&... args);
 //			template <class... Args>
@@ -133,12 +139,12 @@ namespace ft {
 //			iterator  erase(const_iterator first, const_iterator last);
 //			void clear() noexcept;
 
-	//-------Observers-------//
+			//-------Observers-------//
 //			allocator_type get_allocator() const noexcept;
 //			key_compare    key_comp()      const;
 //			value_compare  value_comp()    const;
 
-	//-------Map Operations-------//
+			//-------Map Operations-------//
 //			iterator find(const key_type& k);
 //			const_iterator find(const key_type& k) const;
 //			size_type      count(const key_type& k) const;
@@ -149,7 +155,7 @@ namespace ft {
 //			pair<iterator,iterator>             equal_range(const key_type& k);
 //			pair<const_iterator,const_iterator> equal_range(const key_type& k) const;
 
-	//-------Operational overloads-------//
+			//-------Operational overloads-------//
 	};
 	//-------Non-member function overloads-------//
 //		template <class Key, class T, class Compare, class Allocator>
@@ -170,7 +176,6 @@ namespace ft {
 //		template <class Key, class T, class Compare, class Allocator>
 //		bool operator<=(const map<Key, T, Compare, Allocator>& x, const map<Key, T, Compare, Allocator>& y);
 }
-
 
 
 #endif //FT_CONTAINERS_FT_MAP_HPP
