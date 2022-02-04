@@ -3,11 +3,44 @@
 
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 #define LEFT 0
 #define RIGHT 1
 
 namespace ft{
+
+	struct AVLprint{
+		int _layers;
+		std::vector<int> *array;
+
+		AVLprint( int layers ){
+			_layers = layers;
+			array = new std::vector<int>[layers];
+		}
+
+		void add( int layer, int input ){
+			array[layer - 1].push_back(input);
+		}
+
+		void print( void ){
+			while ( _layers > 0 ){
+				_layers--;
+				std::cout << " ";
+				for ( int i = 0; i < _layers; i++ )
+					std::cout << "\t";
+				for ( std::vector<int>::iterator it = array[_layers].begin(); it < array[_layers].end(); it++ ){
+					if ( *it )
+						std::cout << *it;
+					else
+						std::cout << "_";
+					for ( int i = 0; i <= _layers; i++ )
+						std::cout << "  ";
+				}
+				std::cout << std::endl;
+			}
+		}
+	};
 
 	template< class Pair = std::pair< class T1, class T2 > >
 	class AVLtree{
@@ -54,9 +87,6 @@ namespace ft{
 
 				_left = tmp->_right;
 				tmp->_right = this;
-
-				this->set_height();
-				tmp->set_height();
 				return tmp;
 			}
 
@@ -65,23 +95,30 @@ namespace ft{
 
 				_right = tmp->_left;
 				tmp->_left = this;
-
-				this->set_height();
-				tmp->set_height();
 				return tmp;
 			}
 
 			//-------Capacity-------//
 			int difference( void ){
-				if ( !_left && !_right )
-					return 0;
-				if ( !_left )
-					return _right->_height;
-				if ( !_right )
-					return _left->_height;
-				return _left->_height - _right->_height;
+				size_type left = 0;
+				size_type right = 0;
+				if ( _left )
+					left = _left->get_height();
+				if ( _right )
+					right = _right->get_height();
+				return left - right;
 			}
 
+			size_type get_height( void ){
+				size_type left = 0;
+				size_type right = 0;
+				if ( _left )
+					left = _left->get_height();
+				if ( _right )
+					right = _right->get_height();
+				return 1 + std::max( left, right );
+			}
+			//-------Modifiers-------//
 			void set_height( void ){
 				size_type height_left = 0;
 				size_type height_right = 0;
@@ -92,7 +129,6 @@ namespace ft{
 				_height = 1 + std::max( height_left, height_right );
 			}
 
-			//-------Modifiers-------//
 			pointer balance( void ){
 				int difference = this->difference();
 				if ( difference > 1 ){
@@ -129,25 +165,38 @@ namespace ft{
 					}
 				}else
 					return this;
-				this->set_height();
 				return this->balance();
 			}
 
-			void print( void ){
-				std::cout << _input.first << " VALUE " << _input.second << std::endl;
-
+			int set_print( AVLprint data, int count, int *layer ){
+				data.add( *layer, _input.first );
 				if ( _left ){
-					std::cout << "\tLEFT ";
-					_left->print();
+					(*layer)--;
+					count = _left->set_print( data, ++count, layer );
 				}else{
-					std::cout << "LEFT EMPTY" << std::endl;
+					if ( *layer > 1){
+						data.add( *layer - 1, 0 );
+						count++;
+					}
 				}
 				if ( _right ){
-					std::cout << "\tRIGHT ";
-					_right->print();
+					(*layer)--;
+					count = _right->set_print( data, ++count, layer );
 				}else{
-					std::cout << "RIGHT EMPTY" << std::endl;
+					if ( *layer > 1){
+						data.add( *layer - 1, 0 );
+						count++;
+					}
 				}
+				(*layer)++;
+				return count;
+			}
+
+			void print( void ){
+				int layer = this->get_height();
+				AVLprint data(layer);
+				this->set_print( data, 1, &layer );
+				data.print();
 			}
 
 	};

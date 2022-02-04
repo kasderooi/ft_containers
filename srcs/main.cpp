@@ -61,6 +61,11 @@ int main() {
 	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 8, 8 ) ) );
 	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 9, 9 ) ) );
 	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 7, 7 ) ) );
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 6, 6 ) ) );
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 10, 10 ) ) );
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 11, 11 ) ) );
+	for ( int i = 12; i < 2500; i++ )
+		root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( i, i ) ) );
 	root->print();
 	return 0;
 }
