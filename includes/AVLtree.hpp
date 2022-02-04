@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <iostream>
+
 #define LEFT 0
 #define RIGHT 1
 
@@ -32,13 +33,14 @@ namespace ft{
 		public:
 
 			//-------(De-)Constructors-------//
-			AVLtree( void ) : _input( 0 ), _height( 1 ), _parent(NULL), _left( NULL ), _right( NULL ){ return; }
+			AVLtree( void ) : _input( 0 ), _height( 0 ), _parent( NULL ), _left( NULL ), _right( NULL ){ return; }
 
-			AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent(NULL), _left( NULL ), _right( NULL ){ return; }
+			AVLtree( value_type input ) : _input( input ), _height( 0 ), _parent( NULL ), _left( NULL ),
+										  _right( NULL ){ return; }
 
 			~AVLtree( void ){ return; }
 
-			AVLtree< Pair >& operator=( const AVLtree &original ){
+			AVLtree< Pair > &operator=( const AVLtree &original ){
 				_input = original._input;
 				_height = original._height;
 				_parent = original._parent;
@@ -48,27 +50,29 @@ namespace ft{
 
 			//-------Rotators-------//
 			pointer left_rotation( void ){
-				_right->_parent = _parent;
-				_parent = _right;
-				_right = _parent->_left;
-				_parent->_left = this;
-				_height = std::max( _left->_height, _right->_height );
-				_parent->_height = std::max( _left->_height, _right->_height );
-				return _parent;
+				pointer tmp = _left;
+
+				_left = tmp->_right;
+				tmp->_right = this;
+
+				this->set_height();
+				tmp->set_height();
+				return tmp;
 			}
 
 			pointer right_rotation( void ){
-				_left->_parent = _parent;
-				_parent = _left;
-				_left = _parent->_right;
-				_parent->_right = this;
-				_height = std::max( _left->_height, _right->_height );
-				_parent->_height = std::max( _left->_height, _right->_height );
-				return _parent;
+				pointer tmp = _right;
+
+				_right = tmp->_left;
+				tmp->_left = this;
+
+				this->set_height();
+				tmp->set_height();
+				return tmp;
 			}
 
 			//-------Capacity-------//
-			size_type difference( void ){
+			int difference( void ){
 				if ( !_left && !_right )
 					return 0;
 				if ( !_left )
@@ -81,17 +85,34 @@ namespace ft{
 			void set_height( void ){
 				size_type height_left = 0;
 				size_type height_right = 0;
-				if ( _left != NULL )
+				if ( _left )
 					height_left = _left->_height;
-				if ( _right != NULL )
+				if ( _right )
 					height_right = _right->_height;
 				_height = 1 + std::max( height_left, height_right );
 			}
 
 			//-------Modifiers-------//
-			pointer insert( pointer node ){
-				size_type difference;
+			pointer balance( void ){
+				int difference = this->difference();
+				if ( difference > 1 ){
+					if ( _left->difference() > 0 )
+						return this->left_rotation();
+					else{
+						_left = _left->right_rotation();
+						return this->left_rotation();
+					}
+				}else if ( difference < -1 ){
+					if ( _right->difference() > 0 ){
+						_right = _right->left_rotation();
+						return this->right_rotation();
+					}else
+						return this->right_rotation();
+				}
+				return this;
+			}
 
+			pointer insert( pointer node ){
 				if ( node->_input.first > this->_input.first ){
 					if ( _right != NULL )
 						_right = _right->insert( node );
@@ -99,49 +120,38 @@ namespace ft{
 						_right = node;
 						node->_parent = this;
 					}
-				} else if ( node->_input.first < this->_input.first ){
+				}else if ( node->_input.first < this->_input.first ){
 					if ( _left != NULL )
 						_left = _left->insert( node );
 					else{
 						_left = node;
 						node->_parent = this;
 					}
-				} else
+				}else
 					return this;
 				this->set_height();
-				difference = this->difference();
-				if ( difference > 1 && _input.first < _left->_input.first )
-					return this->right_rotation();
-				if ( difference < -1 && _input.first > _right->_input.first )
-					return this->left_rotation();
-				if ( difference > 1 && _input.first > _left->_input.first ){
-					_left = _left->left_rotation();
-					return this->right_rotation();
-				}
-				if ( difference < -1 && _input.first < _right->_input.first ){
-					_right = _right->right_rotation();
-					return this->right_rotation();
-				}
-				return this;
+				return this->balance();
 			}
 
-			void print( void ) {
-				std::cout << "KEY " << _input.first << " VALUE " << _input.second << std::endl;
+			void print( void ){
+				std::cout << _input.first << " VALUE " << _input.second << std::endl;
+
 				if ( _left ){
-					std::cout << "LEFT ";
+					std::cout << "\tLEFT ";
 					_left->print();
-				} else {
+				}else{
 					std::cout << "LEFT EMPTY" << std::endl;
 				}
 				if ( _right ){
-					std::cout << "RIGHT ";
+					std::cout << "\tRIGHT ";
 					_right->print();
-				} else {
+				}else{
 					std::cout << "RIGHT EMPTY" << std::endl;
 				}
 			}
 
 	};
+
 }
 
 

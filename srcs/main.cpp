@@ -55,13 +55,13 @@ int main() {
 //	std::cout << Map2.count(4) << std::endl;
 	ft::AVLtree< std::pair< int, int > > *root = new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 5, 5 ) );
 	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 3, 3 ) ) );
-//	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 2, 2 ) ) );
-//	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 4, 4 ) ) );
-//	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 1, 1 ) ) );
-//	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 8, 8 ) ) );
-//	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 9, 9 ) ) );
-//	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 7, 7 ) ) );
-//	//root->print();
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 2, 2 ) ) );
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 4, 4 ) ) );
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 1, 1 ) ) );
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 8, 8 ) ) );
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 9, 9 ) ) );
+	root = root->insert( new ft::AVLtree< std::pair< int, int> >( std::pair< int, int>( 7, 7 ) ) );
+	root->print();
 	return 0;
 }
 
