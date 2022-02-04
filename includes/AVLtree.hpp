@@ -2,12 +2,13 @@
 #define AVLTREE_HPP
 
 #include <algorithm>
+#include <iostream>
 #define LEFT 0
 #define RIGHT 1
 
 namespace ft{
 
-	template< class Pair >
+	template< class Pair = std::pair< class T1, class T2 > >
 	class AVLtree{
 
 		public:
@@ -77,29 +78,67 @@ namespace ft{
 				return _left->_height - _right->_height;
 			}
 
+			void set_height( void ){
+				size_type height_left = 0;
+				size_type height_right = 0;
+				if ( _left != NULL )
+					height_left = _left->_height;
+				if ( _right != NULL )
+					height_right = _right->_height;
+				_height = 1 + std::max( height_left, height_right );
+			}
+
 			//-------Modifiers-------//
-			void insert( pointer node ){
+			pointer insert( pointer node ){
 				size_type difference;
 
-				if ( node->input.first > this->_input->_first ){
-					if ( _right )
-						_right->insert( node );
+				if ( node->_input.first > this->_input.first ){
+					if ( _right != NULL )
+						_right = _right->insert( node );
 					else{
 						_right = node;
 						node->_parent = this;
 					}
-				} else if ( node->_input->_first < this->_input->_first ){
-					if ( _left )
-						_left->insert( node );
+				} else if ( node->_input.first < this->_input.first ){
+					if ( _left != NULL )
+						_left = _left->insert( node );
 					else{
 						_left = node;
 						node->_parent = this;
 					}
 				} else
-					return;
-				_height = 1 + std::max( _left->_height, _right->_height );
+					return this;
+				this->set_height();
 				difference = this->difference();
-				if ( difference > 1 && )
+				if ( difference > 1 && _input.first < _left->_input.first )
+					return this->right_rotation();
+				if ( difference < -1 && _input.first > _right->_input.first )
+					return this->left_rotation();
+				if ( difference > 1 && _input.first > _left->_input.first ){
+					_left = _left->left_rotation();
+					return this->right_rotation();
+				}
+				if ( difference < -1 && _input.first < _right->_input.first ){
+					_right = _right->right_rotation();
+					return this->right_rotation();
+				}
+				return this;
+			}
+
+			void print( void ) {
+				std::cout << "KEY " << _input.first << " VALUE " << _input.second << std::endl;
+				if ( _left ){
+					std::cout << "LEFT ";
+					_left->print();
+				} else {
+					std::cout << "LEFT EMPTY" << std::endl;
+				}
+				if ( _right ){
+					std::cout << "RIGHT ";
+					_right->print();
+				} else {
+					std::cout << "RIGHT EMPTY" << std::endl;
+				}
 			}
 
 	};
