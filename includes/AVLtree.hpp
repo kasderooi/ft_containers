@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include "ft_pair.hpp"
 
 #define LEFT 0
 #define RIGHT 1
@@ -42,18 +43,16 @@ namespace ft{
 		}
 	};
 
-	template< class Pair = std::pair< class T1, class T2 > >
+	template< class Pair = ft::pair< class T1, class T2 > >
 	class AVLtree{
 
 		public:
 
 			typedef Pair value_type;
-			typedef size_t size_type;
-			typedef std::allocator< Pair > allocator_type;
+			typedef T1 first_type;
+			typedef T2 second_type;
 			typedef AVLtree *pointer;
-			typedef AVLtree &reference;
-			typedef const AVLtree *const_pointer;
-			typedef const AVLtree &const_reference;
+			typedef size_t size_type;
 
 		private:
 
@@ -66,9 +65,9 @@ namespace ft{
 		public:
 
 			//-------(De-)Constructors-------//
-			AVLtree( void ) : _input( 0 ), _height( 0 ), _parent( NULL ), _left( NULL ), _right( NULL ){ return; }
+			AVLtree( void ) : _input( 0 ), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ){ return; }
 
-			AVLtree( value_type input ) : _input( input ), _height( 0 ), _parent( NULL ), _left( NULL ),
+			AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _left( NULL ),
 										  _right( NULL ){ return; }
 
 			~AVLtree( void ){ return; }
@@ -87,6 +86,8 @@ namespace ft{
 
 				_left = tmp->_right;
 				tmp->_right = this;
+				this->set_height();
+				tmp->set_height();
 				return tmp;
 			}
 
@@ -95,6 +96,8 @@ namespace ft{
 
 				_right = tmp->_left;
 				tmp->_left = this;
+				this->set_height();
+				tmp->set_height();
 				return tmp;
 			}
 
@@ -103,21 +106,12 @@ namespace ft{
 				size_type left = 0;
 				size_type right = 0;
 				if ( _left )
-					left = _left->get_height();
+					left = _left->_height;
 				if ( _right )
-					right = _right->get_height();
+					right = _right->_height;
 				return left - right;
 			}
 
-			size_type get_height( void ){
-				size_type left = 0;
-				size_type right = 0;
-				if ( _left )
-					left = _left->get_height();
-				if ( _right )
-					right = _right->get_height();
-				return 1 + std::max( left, right );
-			}
 			//-------Modifiers-------//
 			void set_height( void ){
 				size_type height_left = 0;
@@ -165,6 +159,7 @@ namespace ft{
 					}
 				}else
 					return this;
+				this->set_height();
 				return this->balance();
 			}
 
@@ -193,7 +188,10 @@ namespace ft{
 			}
 
 			void print( void ){
-				int layer = this->get_height();
+				int layer = _height;
+				std::cout << _height << std::endl;
+				std::cout << _left->_height << std::endl;
+				std::cout << _right->_height << std::endl;
 				AVLprint data(layer);
 				this->set_print( data, 1, &layer );
 				data.print();
