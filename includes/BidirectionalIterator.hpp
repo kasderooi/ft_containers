@@ -1,12 +1,12 @@
-#ifndef FT_CONTAINERS_RandomAccesIterator_HPP
-#define FT_CONTAINERS_RandomAccesIterator_HPP
+#ifndef FT_CONTAINERS_BidirectionalIterator_HPP
+#define FT_CONTAINERS_BidirectionalIterator_HPP
 
 #include "IteratorUtils.hpp"
 
 namespace ft{
 
 
-	template< class T, class Pointer = T *, class Reference = T &, class Category = ft::random_access_iterator_tag >
+	template< class T, class Pointer = T *, class Reference = T &, class Category = ft::bidirectional_iterator_tag >
 	class BidirectionalIterator{
 
 		public:
@@ -61,41 +61,13 @@ namespace ft{
 				return ret;
 			}
 
-			iterator operator+( difference_type n ){ return iterator( this->_ptr + n ); }
-
-			size_type operator+( iterator n ){ return this->_ptr + n._ptr; }
-
-			iterator operator-( difference_type n ){ return iterator( this->_ptr - n ); }
-
-			size_type operator-( iterator n ){ return this->_ptr - n._ptr; }
-
-			iterator &operator+=( difference_type n ){
-				this->_ptr += n;
-				return *this;
-			}
-
-			iterator &operator-=( difference_type n ){
-				this->_ptr -= n;
-				return *this;
-			}
-
 			reference operator*( void ){ return *this->_ptr; }
 
 			pointer operator->( void ){ return this->_ptr; }
 
-			reference operator[]( difference_type n ) const{ return *( *this + n ); }
-
 			bool operator==( const iterator &subject ) const{ return this->_ptr == subject._ptr; }
 
 			bool operator!=( const iterator &subject ) const{ return this->_ptr != subject._ptr; }
-
-			bool operator<( const iterator &subject ) const{ return this->_ptr < subject._ptr; }
-
-			bool operator>( const iterator &subject ) const{ return this->_ptr > subject._ptr; }
-
-			bool operator<=( const iterator &subject ) const{ return this->_ptr <= subject._ptr; }
-
-			bool operator>=( const iterator &subject ) const{ return this->_ptr >= subject._ptr; }
 
 	};
 

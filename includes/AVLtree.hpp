@@ -101,6 +101,19 @@ namespace ft{
 				return tmp;
 			}
 
+			//-------Iterators-------//
+			pointer begin( void ){
+				if ( _left )
+					return _left->begin();
+				return this;
+			}
+
+			pointer end( void ){
+				if ( _right )
+					return _right->end();
+				return this;
+			}
+
 			//-------Capacity-------//
 			int difference( void ){
 				size_type left = 0;
@@ -163,6 +176,11 @@ namespace ft{
 				return this->balance();
 			}
 
+//			pointer erase(  ){
+//
+//			}
+
+			//-------Printer-------//
 			int set_print( AVLprint data, int count, int *layer ){
 				data.add( *layer, _input.first );
 				if ( _left ){

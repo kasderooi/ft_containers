@@ -1,37 +1,36 @@
 #ifndef FT_MAP_HPP
 #define FT_MAP_HPP
 
-#include <deque>
+#include "ft_pair.hpp"
+#include "AVLtree.hpp"
+#include "BidirectionalIterator.hpp"
 
 namespace ft{
 
-	template< class Key, class T, class Compare = std::less< Key >, class Alloc = std::allocator< std::pair< const Key, T > > >
+	template< class Key, class T, class Compare = std::less< Key >, class Alloc = std::allocator< ft::pair< const Key, T > > >
 	class map{
 
 		public:
 
 			typedef Key key_type;
 			typedef T mapped_type;
-			typedef std::pair< const Key, T > value_type;
+			typedef ft::pair< const Key, T > value_type;
 			typedef Compare key_compare;
 			//typedef	 nestedfunctionclass				value_compare;
 			typedef Alloc allocator_type;
-//			typedef		value_type&				reference;
-//			typedef		const value_type&		const_reference;
-//			typedef		value_type*				pointer;
-//			typedef		const value_type*		const_pointer;
-//			typedef		size_t					size_type;
-//			typedef		ptrdiff_t 				difference_type;
-			typedef typename allocator_type::reference reference;
-			typedef typename allocator_type::const_reference const_reference;
-			typedef typename allocator_type::pointer pointer;
-			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename allocator_type::size_type size_type;
-			typedef typename allocator_type::difference_type difference_type;
-//			typedef	typename ft::BidirectionalIterator< T, T*, T& > iterator;
-//			typedef	typename ft::BidirectionalIterator< T, const T*, const T& > const_iterator;
-//			typedef	typename ft::BidirectionalIterator< T, T*, T& > reverse_iterator;
-//			typedef	typename ft::BidirectionalIterator< T, const T*, const T& > const_reverse_iterator;
+			typedef value_type& reference;
+			typedef const value_type& const_reference;
+			typedef value_type* pointer;
+			typedef const value_type* const_pointer;
+			typedef size_t size_type;
+			typedef ptrdiff_t difference_type;
+			typedef AVLtree< value_type > node;
+			typedef node* node_pointer;
+			typedef std::allocator< node > node_allocator_type;
+			typedef typename ft::BidirectionalIterator< node, node*, node& > iterator;
+			typedef typename ft::BidirectionalIterator< node, const node*, const node& > const_iterator;
+			typedef typename ft::BidirectionalIterator< node, node*, node& > reverse_iterator;
+			typedef typename ft::BidirectionalIterator< node, const node*, const node& > const_reverse_iterator;
 
 			class value_compare : public std::binary_function< value_type, value_type, bool >{
 
@@ -47,79 +46,109 @@ namespace ft{
 
 				public:
 
-					bool operator()( const value_type &x, const value_type &y ) const;
+					bool operator()( const value_type& x, const value_type& y ) const;
 			};
 
 		private:
 
 			allocator_type _alloc;
-			pointer _map;
+			node_allocator_type _nalloc;
 			size_type _size;
-			size_type _capacity;
+			node_pointer _root;
+			node_pointer _begin;
+			node_pointer _end;
 
 		public:
 
 			//-------(De-)Constructors-------//
-//			map()
-//			noexcept(
-//			is_nothrow_default_constructible<allocator_type>::value &&
-//			is_nothrow_default_constructible<key_compare>::value &&
-//			is_nothrow_copy_constructible<key_compare>::value);
-//			explicit map(const key_compare& comp);
-//			map(const key_compare& comp, const allocator_type& a);
-//			template <class InputIterator>
-//			map(InputIterator first, InputIterator last,
-//				const key_compare& comp = key_compare());
-//			template <class InputIterator>
-//			map(InputIterator first, InputIterator last,
-//				const key_compare& comp, const allocator_type& a);
-//			map(const map& m);
-//			map(map&& m)
-//			noexcept(
-//			is_nothrow_move_constructible<allocator_type>::value &&
-//			is_nothrow_move_constructible<key_compare>::value);
-//			explicit map(const allocator_type& a);
-//			map(const map& m, const allocator_type& a);
-//			map(map&& m, const allocator_type& a);
-//			map(initializer_list<value_type> il, const key_compare& comp = key_compare());
-//			map(initializer_list<value_type> il, const key_compare& comp, const allocator_type& a);
-//			template <class InputIterator>
-//			~map();
+			explicit map( const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :
+					_alloc( alloc ), _nalloc( node_allocator_type()), _size( 0 ), _root( NULL ), _begin( NULL ),
+					_end( NULL ){ return; }
+
+//			template< class InputIterator >
+//			map( InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
+//				 const allocator_type &alloc = allocator_type());
+
+			map( const map& x ){
+				this = x;
+				return;
+			}
+
+			~map( void ){ return; }
+
+			//-------Assignment Operator-------//
+//			map& operator=( const map& original ){
 //
-//			map& operator=(const map& m);
-//			map& operator=(map&& m)
-//			noexcept(
-//			allocator_type::propagate_on_container_move_assignment::value &&
-//			is_nothrow_move_assignable<allocator_type>::value &&
-//			is_nothrow_move_assignable<key_compare>::value);
-//			map& operator=(initializer_list<value_type> il);
+//			}
 
 			//-------iterators-------//
-//			iterator begin() noexcept;
-//			const_iterator begin() const noexcept;
-//			iterator end() noexcept;
-//			const_iterator end()   const noexcept;
-//
-//			reverse_iterator rbegin() noexcept;
-//			const_reverse_iterator rbegin() const noexcept;
-//			reverse_iterator rend() noexcept;
-//			const_reverse_iterator rend()   const noexcept;
-//
-//			const_iterator         cbegin()  const noexcept;
-//			const_iterator         cend()    const noexcept;
-//			const_reverse_iterator crbegin() const noexcept;
-//			const_reverse_iterator crend()   const noexcept;
+			iterator begin( void ){
+				return iterator( _begin );
+			}
+
+			const_iterator begin( void ) const{
+				return const_iterator( _begin );
+			}
+
+			iterator end( void ){
+				return iterator( _end );
+			}
+
+			const_iterator end( void ) const{
+				return const_iterator( _end );
+			}
+
+			iterator rbegin( void ){
+				return reverse_iterator( _begin );
+			}
+
+			const_iterator rbegin( void ) const{
+				return const_reverse_iterator( _begin );
+			}
+
+			iterator rend( void ){
+				return reverse_iterator( _end );
+			}
+
+			const_iterator rend( void ) const{
+				return const_reverse_iterator( _end );
+			}
 
 			//-------Capacity-------//
-//			bool      empty()    const noexcept;
-//			size_type size()     const noexcept;
-//			size_type max_size() const noexcept;
+			bool empty() const{
+				if ( _size == 0 )
+					return true;
+				return false;
+			}
+
+			size_type size() const{
+				return _size;
+			}
+
+			size_type max_size() const{
+				return _nalloc.max_size();
+			}
 
 			//-------Element access-------//
-//			mapped_type& operator[](const key_type& k);
-//			mapped_type& operator[](key_type&& k);
+//			mapped_type& operator[]( const key_type& k ){
+//
+//			}
+//
+//			mapped_type& operator[]( key_type&& k ){
+//
+//			}
 
 			//-------Modifiers-------//
+			pair< iterator, bool > insert( const value_type& val ){
+				if ( !_root ) {
+					_root = _nalloc.allocate( 1 );
+					_nalloc.construct( _root, val );
+					_begin = _root;
+					_end = _root;
+				} else {
+
+				}
+			}
 //			template <class... Args>
 //			pair<iterator, bool> emplace(Args&&... args);
 //			template <class... Args>

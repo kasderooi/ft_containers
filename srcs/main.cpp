@@ -27,8 +27,8 @@
 //}
 
 int main() {
-//	std::map<int,int> Map1;
-//	Map1.insert(ft::pair<int, int>(1, 9 ) );
+	std::map<int,int> Map1;
+	Map1.insert(std::pair<int, int>(1, 9 ) );
 //	Map1.insert(ft::pair<int, int>(2, 8 ) );
 //	Map1.insert(ft::pair<int, int>(3, 7 ) );
 //	Map1.insert(ft::pair<int, int>(4, 6 ) );
@@ -65,9 +65,17 @@ int main() {
 	root = root->insert( new ft::AVLtree< ft::pair< int, int> >( ft::pair< int, int>( 6, 6 ) ) );
 	root = root->insert( new ft::AVLtree< ft::pair< int, int> >( ft::pair< int, int>( 10, 10 ) ) );
 	root = root->insert( new ft::AVLtree< ft::pair< int, int> >( ft::pair< int, int>( 11, 11 ) ) );
-	for ( int i = 12; i < 25; i++ )
+	for ( int i = 12; i <= 25; i++ )
 		root = root->insert( new ft::AVLtree< ft::pair< int, int> >( ft::pair< int, int>( i, i ) ) );
 	root->print();
+	ft::AVLtree< ft::pair< int, int > > *root2 = new ft::AVLtree< ft::pair< int, int> >( ft::pair< int, int>( 1, 1 ) );
+	for ( int i = 25; i > 1; i-- )
+		root2 = root2->insert( new ft::AVLtree< ft::pair< int, int> >( ft::pair< int, int>( i, i ) ) );
+	root2->print();
+	ft::AVLtree< ft::pair< int, int > > *root3 = new ft::AVLtree< ft::pair< int, int> >( ft::pair< int, int>( 25, 25 ) );
+	for ( int i = 1; i < 25; i++ )
+		root3 = root3->insert( new ft::AVLtree< ft::pair< int, int> >( ft::pair< int, int>( i, i ) ) );
+	root3->print();
 	return 0;
 }
 
