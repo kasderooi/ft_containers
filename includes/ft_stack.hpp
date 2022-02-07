@@ -1,11 +1,11 @@
 #ifndef FT_STACK_HPP
 #define FT_STACK_HPP
 
-#include <deque>
+#include "ft_vector.hpp"
 
 namespace ft {
 
-	template< class T, class Container = std::deque<T> >
+	template< class T, class Container = ft::vector<T> >
 	class stack {
 
 		public:

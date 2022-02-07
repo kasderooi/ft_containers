@@ -3,11 +3,12 @@
 
 #include "ft_pair.hpp"
 #include "AVLtree.hpp"
+#include "utils.hpp"
 #include "BidirectionalIterator.hpp"
 
 namespace ft{
 
-	template< class Key, class T, class Compare = std::less< Key >, class Alloc = std::allocator< ft::pair< const Key, T > > >
+	template< class Key, class T, class Compare = less< Key >, class Alloc = std::allocator< pair< const Key, T > > >
 	class map{
 
 		public:
@@ -16,7 +17,6 @@ namespace ft{
 			typedef T mapped_type;
 			typedef ft::pair< const Key, T > value_type;
 			typedef Compare key_compare;
-			//typedef	 nestedfunctionclass				value_compare;
 			typedef Alloc allocator_type;
 			typedef value_type& reference;
 			typedef const value_type& const_reference;
@@ -24,35 +24,37 @@ namespace ft{
 			typedef const value_type* const_pointer;
 			typedef size_t size_type;
 			typedef ptrdiff_t difference_type;
-			typedef AVLtree< value_type > node;
+			typedef AVLtree< Key, T > node;
 			typedef node* node_pointer;
-			typedef std::allocator< node > node_allocator_type;
-			typedef typename ft::BidirectionalIterator< node, node*, node& > iterator;
-			typedef typename ft::BidirectionalIterator< node, const node*, const node& > const_iterator;
-			typedef typename ft::BidirectionalIterator< node, node*, node& > reverse_iterator;
-			typedef typename ft::BidirectionalIterator< node, const node*, const node& > const_reverse_iterator;
+			typedef typename BidirectionalIterator< node, node*, node& > iterator;
+			typedef typename BidirectionalIterator< node, const node*, const node& > const_iterator;
+			typedef typename BidirectionalIterator< node, node*, node& > reverse_iterator;
+			typedef typename BidirectionalIterator< node, const node*, const node& > const_reverse_iterator;
 
-			class value_compare : public std::binary_function< value_type, value_type, bool >{
+            class value_compare : public binary_function< value_type, value_type, bool >{
 
-				public:
+            public:
 
-					friend class map;
+                friend class map;
 
-				protected:
+            protected:
 
-					key_compare comp;
+                key_compare comp;
 
-					value_compare( key_compare c );
+                value_compare( key_compare c ) : comp( c ){};
 
-				public:
+            public:
 
-					bool operator()( const value_type& x, const value_type& y ) const;
-			};
+                bool operator()( const value_type& x, const value_type& y ) const{
+                    return comp( x.first, y.first );
+                }
+            };
+
+            typedef	value_compare nestedfunctionclass;
 
 		private:
 
 			allocator_type _alloc;
-			node_allocator_type _nalloc;
 			size_type _size;
 			node_pointer _root;
 			node_pointer _begin;
@@ -62,7 +64,7 @@ namespace ft{
 
 			//-------(De-)Constructors-------//
 			explicit map( const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :
-					_alloc( alloc ), _nalloc( node_allocator_type()), _size( 0 ), _root( NULL ), _begin( NULL ),
+					_alloc( alloc ), _size( 0 ), _root( NULL ), _begin( NULL ),
 					_end( NULL ){ return; }
 
 //			template< class InputIterator >
@@ -126,7 +128,7 @@ namespace ft{
 			}
 
 			size_type max_size() const{
-				return _nalloc.max_size();
+				return _alloc.max_size();
 			}
 
 			//-------Element access-------//
@@ -141,12 +143,20 @@ namespace ft{
 			//-------Modifiers-------//
 			pair< iterator, bool > insert( const value_type& val ){
 				if ( !_root ) {
-					_root = _nalloc.allocate( 1 );
-					_nalloc.construct( _root, val );
+					_root = _alloc.allocate( 1 );
+					_alloc.construct( _root, val.first, val.second );
 					_begin = _root;
 					_end = _root;
+					_size = 1;
 				} else {
-
+                    node_pointer tmp = _alloc.allocate( 1 );
+                    _alloc.construct( tmp, val.first, val.second );
+                    _root = _root->insert( tmp );
+                    _size++;
+                    if ( val.first < _begin->get_key() )
+                        _begin = tmp;
+                    if ( val.first > _end->get_key() )
+                        _end = tmp;
 				}
 			}
 //			template <class... Args>

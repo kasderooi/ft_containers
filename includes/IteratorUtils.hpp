@@ -13,6 +13,8 @@ namespace ft{
 	};
 	struct reverse_iterator_tag{
 	};
+	struct node_iterator_tag{
+	};
 
 	template< class Iterator >
 	struct iterator_traits{

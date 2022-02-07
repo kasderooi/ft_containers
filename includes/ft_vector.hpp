@@ -20,8 +20,8 @@ namespace ft{
 			typedef value_type& reference;
 			typedef const value_type* const_pointer;
 			typedef const value_type& const_reference;
-			typedef typename ft::BidirectionalIterator< T, T*, T& > iterator;
-			typedef typename ft::BidirectionalIterator< T, const T*, const T& > const_iterator;
+			typedef typename ft::RandomAccessIterator< T, T*, T& > iterator;
+			typedef typename ft::RandomAccessIterator< T, const T*, const T& > const_iterator;
 			typedef typename ft::ReverseIterator< T, T*, T& > reverse_iterator;
 			typedef typename ft::ReverseIterator< T, const T*, const T& > const_reverse_iterator;
 

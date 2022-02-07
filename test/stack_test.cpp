@@ -16,8 +16,6 @@ TEST_CASE("vector iterators", "[vector]") {
     ft::vector<int> ft_vec1(3,100);
     std::stack<int, std::vector<int> > std_stack1(std_vec1);
     ft::stack<int, ft::vector<int> > ft_stack1(ft_vec1);
-    std::stack<int> std_stack2(mydeque);
-    ft::stack<int> ft_stack2(mydeque);
     std::stack<int> std_stack3;
     std::stack<int> std_stack4;
     ft::stack<int> ft_stack3;
@@ -25,7 +23,6 @@ TEST_CASE("vector iterators", "[vector]") {
 
     SECTION("begin/end ++/--") {
         REQUIRE( std_stack1.empty() == ft_stack1.empty() );
-        REQUIRE( std_stack2.empty() == ft_stack2.empty() );
         REQUIRE( std_stack3.empty() == ft_stack3.empty() );
         REQUIRE( std_stack1.top() == ft_stack1.top() );
     }

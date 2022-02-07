@@ -6,7 +6,7 @@
 namespace ft{
 
 
-	template< class T, class Pointer = T *, class Reference = T &, class Category = ft::bidirectional_iterator_tag >
+	template< class T, class Pointer = T *, class Reference = T &, class Category = bidirectional_iterator_tag >
 	class BidirectionalIterator{
 
 		public:
@@ -25,13 +25,13 @@ namespace ft{
 
 		public:
 
-			BidirectionalIterator( void ) : _ptr( NULL ){ return; }
+			BidirectionalIterator(void ) : _ptr(NULL ){ return; }
 
-			BidirectionalIterator( pointer ptr ) : _ptr( ptr ){ return; }
+			BidirectionalIterator(pointer ptr ) : _ptr(ptr ){ return; }
 
-			BidirectionalIterator( const iterator &original ) : _ptr( original._ptr ){ return; }
+			BidirectionalIterator(const iterator &original ) : _ptr(original._ptr ){ return; }
 
-			~BidirectionalIterator( void ){ return; }
+			~BidirectionalIterator(void ){ return; }
 
 			iterator &operator=( const iterator &original ){
 				this->_ptr = original._ptr;
@@ -39,25 +39,25 @@ namespace ft{
 			}
 
 			iterator &operator++( void ){
-				this->_ptr++;
+                _ptr = _ptr->next( _ptr->get_key() ) ;
 				return *this;
 			}
 
 			iterator operator++( int ){
 				iterator ret = *this;
-				++this->_ptr;
+                _ptr = _ptr->next( _ptr->get_key() ) ;
 				return ret;
 			}
 
 			//		iterator operator++( void ) { this->_ptr++; return this; }
 			iterator &operator--( void ){
-				this->_ptr--;
+                _ptr = _ptr->previous( _ptr->get_key() );
 				return *this;
 			}
 
 			iterator operator--( int ){
 				iterator ret = *this;
-				--this->_ptr;
+                _ptr = _ptr->previous( _ptr->get_key() );
 				return ret;
 			}
 
