@@ -5,10 +5,11 @@
 #include "AVLtree.hpp"
 #include "utils.hpp"
 #include "BidirectionalIterator.hpp"
+#include <memory>
 
 namespace ft{
 
-	template< class Key, class T, class Compare = less< Key >, class Alloc = std::allocator< pair< const Key, T > > >
+	template< class Key, class T, class Compare = ft::less< Key >, class Alloc = std::allocator< ft::pair< const Key, T > > >
 	class map{
 
 		public:
@@ -24,12 +25,13 @@ namespace ft{
 			typedef const value_type* const_pointer;
 			typedef size_t size_type;
 			typedef ptrdiff_t difference_type;
-			typedef AVLtree< Key, T > node;
+			typedef AVLtree< const Key, T > node;
 			typedef node* node_pointer;
-			typedef typename BidirectionalIterator< node, node*, node& > iterator;
-			typedef typename BidirectionalIterator< node, const node*, const node& > const_iterator;
-			typedef typename BidirectionalIterator< node, node*, node& > reverse_iterator;
-			typedef typename BidirectionalIterator< node, const node*, const node& > const_reverse_iterator;
+			typedef typename Alloc::template rebind<node>::other node_alloc;
+			typedef typename ft::BidirectionalIterator< node, node*, node& > iterator;
+			typedef typename ft::BidirectionalIterator< node, const node*, const node& > const_iterator;
+			typedef typename ft::BidirectionalIterator< node, node*, node& > reverse_iterator;
+			typedef typename ft::BidirectionalIterator< node, const node*, const node& > const_reverse_iterator;
 
             class value_compare : public binary_function< value_type, value_type, bool >{
 
@@ -54,7 +56,7 @@ namespace ft{
 
 		private:
 
-			allocator_type _alloc;
+			node_alloc _alloc;
 			size_type _size;
 			node_pointer _root;
 			node_pointer _begin;
@@ -67,9 +69,16 @@ namespace ft{
 					_alloc( alloc ), _size( 0 ), _root( NULL ), _begin( NULL ),
 					_end( NULL ){ return; }
 
-//			template< class InputIterator >
-//			map( InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
-//				 const allocator_type &alloc = allocator_type());
+			template< class InputIterator >
+			map( InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
+					 const allocator_type &alloc = allocator_type()) : _alloc( alloc ), _size( 0 ), _root( NULL ), _begin( NULL ),
+					_end( NULL ){
+				InputIterator tmp = first;
+				while ( tmp != last ){
+					this->insert( *tmp );
+					tmp++;
+				}
+			}
 
 			map( const map& x ){
 				this = x;
@@ -132,46 +141,34 @@ namespace ft{
 			}
 
 			//-------Element access-------//
-//			mapped_type& operator[]( const key_type& k ){
-//
-//			}
-//
-//			mapped_type& operator[]( key_type&& k ){
-//
-//			}
+			mapped_type& operator[]( const key_type& k ){
+				return _root->find_node( k )->get_pair().second;
+			}
 
 			//-------Modifiers-------//
-			pair< iterator, bool > insert( const value_type& val ){
-				if ( !_root ) {
-					_root = _alloc.allocate( 1 );
-					_alloc.construct( _root, val.first, val.second );
-					_begin = _root;
-					_end = _root;
-					_size = 1;
-				} else {
-                    node_pointer tmp = _alloc.allocate( 1 );
-                    _alloc.construct( tmp, val.first, val.second );
+			pair< iterator, bool > insert( const_reference val ){
+				if ( _root && _root->find_node( val.first ) )
+					return ( ft::make_pair( iterator( _root->find_node( val.first ) ), false ) );
+				node_pointer tmp = _alloc.allocate( 1 );
+				_alloc.construct( tmp, val );
+				_size++;
+				if ( _root ) {
                     _root = _root->insert( tmp );
-                    _size++;
                     if ( val.first < _begin->get_key() )
                         _begin = tmp;
                     if ( val.first > _end->get_key() )
                         _end = tmp;
+				} else {
+					_root = tmp;
+					_begin = _root;
+					_end = _root;
 				}
+				return ( ft::make_pair( iterator( _root->find_node( val.first ) ), true ) );
 			}
-//			template <class... Args>
-//			pair<iterator, bool> emplace(Args&&... args);
-//			template <class... Args>
-//			iterator emplace_hint(const_iterator position, Args&&... args);
-//			pair<iterator, bool> insert(const value_type& v);
-//			template <class P>
-//			pair<iterator, bool> insert(P&& p);
-//			iterator insert(const_iterator position, const value_type& v);
-//			template <class P>
-//			iterator insert(const_iterator position, P&& p);
-//			template <class InputIterator>
-//			void insert(InputIterator first, InputIterator last);
-//			void insert(initializer_list<value_type> il);
+
+			iterator insert ( iterator position, const value_type& val ){
+
+			}
 //
 //			iterator  erase(const_iterator position);
 //			size_type erase(const key_type& k);

@@ -50,7 +50,7 @@ namespace ft{
 
 	        typedef Key first_type;
 	        typedef T second_type;
-	        typedef pair< first_type, second_type> value_type;
+	        typedef pair< const first_type, second_type> value_type;
             typedef value_type* value_pointer;
 			typedef AVLtree* pointer;
 			typedef size_t size_type;
@@ -146,7 +146,7 @@ namespace ft{
                     return _right->next( key );
                 else if ( ( _parent && _parent->_input.first > key && _parent->_input.first < _input.first ) ||
                         ( _right && _right->_input.first <= key ) ||
-                        ( _input.first == key && _parent ) ) {// && _parent->_input.first < _input.first
+                        ( _input.first == key ) ) {
                     if ( !_parent )
                         return NULL;
                     return _parent->next(key);
@@ -159,9 +159,9 @@ namespace ft{
                     return _right->previous( key );
                 else if ( _left && _input.first == key )
                     return _left->previous( key );
-                else if ( ( _parent && _parent->_input.first < key && _parent->_input.first > _input.first ) || // && _parent->_input.first < _input.first
+                else if ( ( _parent && _parent->_input.first < key && _parent->_input.first > _input.first ) ||
                         ( _left && _left->_input.first >= key ) ||
-                        ( _input.first == key && _parent ) ){
+                        ( _input.first == key ) ){
                     if ( !_parent )
                         return NULL;
                     return _parent->previous(key);

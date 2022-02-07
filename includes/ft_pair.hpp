@@ -14,9 +14,10 @@ namespace ft{
 
 		pair( void ) : first(), second(){ return; }
 
-		pair( const pair< T1, T2 > &pr ) : first( pr.first ), second( pr.second ){ return; }
+		pair( const first_type& _first, const second_type& _second ) : first( _first ), second( _second ){ }
 
-		pair( const first_type &_first, const second_type &_second ) : first( _first ), second( _second ){ return; }
+		template< class U, class V >
+		pair( const pair< U, V > &pr ) : first( pr.first ), second( pr.second ){ return; }
 
 		pair< T1, T2 > &operator=( const pair &original ){
 			first = original.first;
