@@ -78,13 +78,15 @@ void basicmaptest( void ){
         ft_map1.insert(ft::pair<int, int>(i, i));
         std_map1.insert( std::pair<int,int>( i, i ) );
     }
-	while ( it != ft_map1.end() ){
+	ft_map1.erase( 7 );
+    std_map1.erase( 7 );
+	while ( it2 != std_map1.end() ){
 	    std::cout << (*it).first << "\t";
         std::cout << (*it2).first << std::endl;
         it++;
         it2++;
 	}
-	while ( it != ft_map1.begin() ){
+	while ( it2 != std_map1.begin() ){
 	    it--;
 	    it2--;
         std::cout << (*it).first << "\t";

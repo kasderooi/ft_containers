@@ -63,9 +63,9 @@ namespace ft{
 				return ret;
 			}
 
-			p_reference operator*( void ){ return this->_ptr->_input; }
+			p_reference operator*( void ){ return *this->_ptr->_input; }
 
-			p_pointer operator->( void ){ return &this->_ptr->_input; }
+			p_pointer operator->( void ){ return this->_ptr->_input; }
 
 			bool operator==( const iterator& subject ) const{ return _ptr == subject._ptr; }
 

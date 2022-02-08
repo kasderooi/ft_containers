@@ -60,7 +60,7 @@ namespace ft{
 			pointer _end;
 
 			//-------(De-)Constructors-------//
-			AVLtree( void ) : _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ), _end(NULL){ return; }
+			AVLtree( void ) : _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ), _end( NULL ){ return; }
 
 			AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _left( NULL ),
 										  _right( NULL ), _end( NULL ){ return; }

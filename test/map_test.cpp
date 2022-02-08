@@ -24,5 +24,6 @@ TEST_CASE("vector iterators", "[vector]") {
     }
     SECTION("begin/end ++/--") {
         REQUIRE();
+        REQUIRE();
     }
 }

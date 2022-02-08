@@ -194,15 +194,15 @@ namespace ft{
 			}
 
 			void  erase( iterator position ){
-                pointer tmp_left = (*position)->_left;
-                pointer tmp_right = (*position)->_right;
+                pointer tmp_left = position.get_ptr()->_left;
+                pointer tmp_right = position.get_ptr()->_right;
                 if ( *position != _root ){                     //            what if erase root
-                    if ( (*position)->_parent->_left == (*position) ) {
-                        (*position)->_parent->_left = NULL;
-                        (*position)->_parent->set_height();
-                    } else if ( (*position)->_parent->_right == (*position) ) {
-                        (*position)->_parent->_right = NULL;
-                        (*position)->_parent->set_height();
+                    if ( position.get_ptr()->_parent->_left == position.get_ptr() ) {
+                        position.get_ptr()->_parent->_left = NULL;
+                        position.get_ptr()->_parent->set_height();
+                    } else if ( (*position)->_parent->_right == position.get_ptr() ) {
+                        position.get_ptr()->_parent->_right = NULL;
+                        position.get_ptr()->_parent->set_height();
                     }
                     _root = _root->insert( tmp_left )->insert( tmp_right );
                 } else {
@@ -214,11 +214,15 @@ namespace ft{
                         _root = _root->insert( tmp_right );
                     }
                 }
-                _alloc.destroy( *position );
+                _alloc.destroy( position.get_ptr() );
+                _size--;
 			}
 
 			size_type erase( const key_type& key ){
-                _root = _root->erase( key );
+                node_pointer node = _root->find_node( key );
+			    if ( node )
+                    erase( iterator( node ) );
+			    return _size;
 			}
 
 			void  erase( iterator first, iterator last ){
