@@ -49,12 +49,12 @@ void print_bound( std::map<int, int> Map, int nbr ) {
 //    root->find_node( 18 )->print_nodes();
 //    std::cout << std::endl;
 //    ft::BidirectionalIterator<ft::AVLtree<int, int>> it( root->find_node(1) );
-//    for ( int i = 1; i < 24; i++ ){
-//        std::cout << i << " " << (*it).get_key() << std::endl;
+//    for ( int i = 1; i < 25; i++ ){
+//        std::cout << i << " " << (*it).first << std::endl;
 //        it++;
 //    }
 //    for ( int i = 24; i > 1; i-- ){
-//        std::cout << i << " " << (*it).get_key() << std::endl;
+//        std::cout << i << " " << (*it).first << std::endl;
 //        it--;
 //    }
 //    ft::AVLtree< int, int > *root2 = new ft::AVLtree< int , int >( ft::pair< int, int>( 1, 1 ) );
@@ -70,8 +70,26 @@ void print_bound( std::map<int, int> Map, int nbr ) {
 void basicmaptest( void ){
 	ft::map<int, int> ft_map1;
 	std::map<int, int> std_map1;
-	ft_map1.insert( ft::pair<int,int>( 3, 3 ) );
-	std_map1.insert( std::pair<int,int>( 3, 3 ) );
+    ft_map1.insert( ft::pair<int,int>( 1, 1 ) );
+    std_map1.insert( std::pair<int,int>( 1, 1 ) );
+	ft::map<int,int>::iterator it = ft_map1.begin();
+    std::map<int,int>::iterator it2 = std_map1.begin();
+	for ( int i = 2; i < 25; i++) {
+        ft_map1.insert(ft::pair<int, int>(i, i));
+        std_map1.insert( std::pair<int,int>( i, i ) );
+    }
+	while ( it != ft_map1.end() ){
+	    std::cout << (*it).first << "\t";
+        std::cout << (*it2).first << std::endl;
+        it++;
+        it2++;
+	}
+	while ( it != ft_map1.begin() ){
+	    it--;
+	    it2--;
+        std::cout << (*it).first << "\t";
+        std::cout << (*it2).first << std::endl;
+	}
 }
 
 int main() {

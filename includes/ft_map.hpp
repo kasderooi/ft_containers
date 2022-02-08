@@ -28,10 +28,10 @@ namespace ft{
 			typedef AVLtree< const Key, T > node;
 			typedef node* node_pointer;
 			typedef typename Alloc::template rebind<node>::other node_alloc;
-			typedef typename ft::BidirectionalIterator< node, node*, node& > iterator;
-			typedef typename ft::BidirectionalIterator< node, const node*, const node& > const_iterator;
-			typedef typename ft::BidirectionalIterator< node, node*, node& > reverse_iterator;
-			typedef typename ft::BidirectionalIterator< node, const node*, const node& > const_reverse_iterator;
+			typedef typename ft::BidirectionalIterator< value_type, node, node*, node& > iterator;
+			typedef typename ft::BidirectionalIterator< value_type,node, const node*, const node& > const_iterator;
+			typedef typename ft::BidirectionalIterator< value_type,node, node*, node& > reverse_iterator;
+			typedef typename ft::BidirectionalIterator< value_type,node, const node*, const node& > const_reverse_iterator;
 
             class value_compare : public binary_function< value_type, value_type, bool >{
 
@@ -60,20 +60,21 @@ namespace ft{
 			size_type _size;
 			node_pointer _root;
 			node_pointer _begin;
-			node_pointer _end;
+			node _end;
 
 		public:
 
 			//-------(De-)Constructors-------//
 			explicit map( const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) :
 					_alloc( alloc ), _size( 0 ), _root( NULL ), _begin( NULL ),
-					_end( NULL ){ return; }
+					_end(){ _end._end = &_end; return; }
 
 			template< class InputIterator >
 			map( InputIterator first, InputIterator last, const key_compare &comp = key_compare(),
 					 const allocator_type &alloc = allocator_type()) : _alloc( alloc ), _size( 0 ), _root( NULL ), _begin( NULL ),
-					_end( NULL ){
+					_end(){
 				InputIterator tmp = first;
+				_end._end = &_end;
 				while ( tmp != last ){
 					this->insert( *tmp );
 					tmp++;
@@ -102,11 +103,11 @@ namespace ft{
 			}
 
 			iterator end( void ){
-				return iterator( _end );
+				return iterator( &this->_end );
 			}
 
 			const_iterator end( void ) const{
-				return const_iterator( _end );
+				return const_iterator( &this->_end );
 			}
 
 			iterator rbegin( void ){
@@ -118,11 +119,11 @@ namespace ft{
 			}
 
 			iterator rend( void ){
-				return reverse_iterator( _end );
+				return reverse_iterator( &this->_end );
 			}
 
 			const_iterator rend( void ) const{
-				return const_reverse_iterator( _end );
+				return const_reverse_iterator( &this->_end );
 			}
 
 			//-------Capacity-------//
@@ -142,7 +143,7 @@ namespace ft{
 
 			//-------Element access-------//
 			mapped_type& operator[]( const key_type& k ){
-				return _root->find_node( k )->get_pair().second;
+				return _root->find_node( k )->_input.second;
 			}
 
 			//-------Modifiers-------//
@@ -151,29 +152,84 @@ namespace ft{
 					return ( ft::make_pair( iterator( _root->find_node( val.first ) ), false ) );
 				node_pointer tmp = _alloc.allocate( 1 );
 				_alloc.construct( tmp, val );
-				_size++;
+				tmp->_end = &this->_end;
+                _size++;
 				if ( _root ) {
                     _root = _root->insert( tmp );
-                    if ( val.first < _begin->get_key() )
+                    if ( val.first < _begin->_input.first )
                         _begin = tmp;
-                    if ( val.first > _end->get_key() )
-                        _end = tmp;
+                    if ( val.first > _end._parent->_input.first )
+                        this->_end._parent = tmp;
 				} else {
-					_root = tmp;
-					_begin = _root;
-					_end = _root;
+                    _root = tmp;
+                    _begin = _root;
+                    this->_end._parent = tmp;
 				}
 				return ( ft::make_pair( iterator( _root->find_node( val.first ) ), true ) );
 			}
 
-			iterator insert ( iterator position, const value_type& val ){
-
+			iterator insert ( iterator position, const_reference val ){
+                if ( _root && _root->find_node( val.first ) )
+                    return ( iterator( _root->find_node( val.first ) ) );
+			    node_pointer tmp = _alloc.allocate( 1 );
+			    _alloc.construct( tmp, val );
+                tmp->_end = &this->_end;
+                _size++;
+                if ( (*position)->_input.first < val.first )
+                    (*position)->insert_right( tmp );
+                else
+                    (*position)->insert_left( tmp );
+                _root = _root->balance();
+                return iterator( tmp );
 			}
-//
-//			iterator  erase(const_iterator position);
-//			size_type erase(const key_type& k);
-//			iterator  erase(const_iterator first, const_iterator last);
-//			void clear() noexcept;
+
+			template< class InputIterator >
+			void insert( InputIterator first, InputIterator last,
+                         typename ft::enable_if< !is_same< InputIterator, value_type >::value, int >::type = 0 ){
+                InputIterator it = first;
+                while ( it != last ){
+                    insert( (*it)->_input );
+                    it++;
+			    }
+			}
+
+			void  erase( iterator position ){
+                pointer tmp_left = (*position)->_left;
+                pointer tmp_right = (*position)->_right;
+                if ( *position != _root ){                     //            what if erase root
+                    if ( (*position)->_parent->_left == (*position) ) {
+                        (*position)->_parent->_left = NULL;
+                        (*position)->_parent->set_height();
+                    } else if ( (*position)->_parent->_right == (*position) ) {
+                        (*position)->_parent->_right = NULL;
+                        (*position)->_parent->set_height();
+                    }
+                    _root = _root->insert( tmp_left )->insert( tmp_right );
+                } else {
+                    if ( tmp_left->_height > tmp_right->_height ){
+                        _root = tmp_right;
+                        _root = _root->insert( tmp_left );
+                    } else {
+                        _root = tmp_left;
+                        _root = _root->insert( tmp_right );
+                    }
+                }
+                _alloc.destroy( *position );
+			}
+
+			size_type erase( const key_type& key ){
+                _root = _root->erase( key );
+			}
+
+			void  erase( iterator first, iterator last ){
+                iterator tmp;
+			    while ( first != last ){
+                    tmp = first++;
+			        erase( tmp );
+                }
+			}
+
+			void clear() noexcept;
 
 			//-------Observers-------//
 //			allocator_type get_allocator() const noexcept;

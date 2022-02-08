@@ -44,32 +44,26 @@ namespace ft{
 	};
 
 	template< class Key, class T >
-	class AVLtree{
-
-		public:
+	struct AVLtree{
 
 	        typedef Key first_type;
 	        typedef T second_type;
 	        typedef pair< const first_type, second_type> value_type;
-            typedef value_type* value_pointer;
 			typedef AVLtree* pointer;
 			typedef size_t size_type;
-
-		private:
 
 			value_type _input;
 			size_type _height;
 			pointer _parent;
 			pointer _left;
 			pointer _right;
-
-		public:
+			pointer _end;
 
 			//-------(De-)Constructors-------//
-			AVLtree( void ) : _input( 0 ), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ){ return; }
+			AVLtree( void ) : _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ), _end(NULL){ return; }
 
 			AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _left( NULL ),
-										  _right( NULL ){ return; }
+										  _right( NULL ), _end( NULL ){ return; }
 
 			~AVLtree( void ){ return; }
 
@@ -121,14 +115,6 @@ namespace ft{
 				return left - right;
 			}
 
-			value_pointer get_pair( void ){
-			    return *_input;
-			}
-
-			first_type get_key( void ) const{
-			    return _input.first;
-			}
-
 			pointer find_node( first_type key ){
 			    if ( key == _input.first )
 			        return this;
@@ -148,14 +134,16 @@ namespace ft{
                         ( _right && _right->_input.first <= key ) ||
                         ( _input.first == key ) ) {
                     if ( !_parent )
-                        return NULL;
+                        return _end;
                     return _parent->next(key);
                 }
 			    return this;
 			}
 
             pointer previous( first_type key ){
-                if ( _right && _right->_input.first < key )
+                if ( this == _end )
+                    return _parent;
+			    if ( _right && _right->_input.first < key )
                     return _right->previous( key );
                 else if ( _left && _input.first == key )
                     return _left->previous( key );
@@ -219,6 +207,24 @@ namespace ft{
 				this->set_height();
 				return this->balance();
 			}
+
+			void insert_right( pointer node ){
+                if ( _right != NULL )
+                    _right = _right->insert( node );
+                else{
+                    _right = node;
+                    node->_parent = this;
+                }
+			}
+
+            void insert_left( pointer node ){
+                if ( _left != NULL )
+                    _left = _left->insert( node );
+                else{
+                    _left = node;
+                    node->_parent = this;
+                }
+            }
 
 			pointer erase( first_type key ){
                 pointer tmp = find_node( key );
