@@ -256,7 +256,7 @@ TEST_CASE("vector<int> modifiers", "[vector]") {
 	std_it += 12;
 	ft_second.insert( ft_it, 999 );
 	std_second.insert( std_it, 999 );
-	SECTION("after iterator insert") {
+	SECTION("after iterator insert_node") {
 		REQUIRE(ft_second.capacity() == std_second.capacity());
 		REQUIRE(ft_second.size() == std_second.size());
 		REQUIRE(ft_second.front() == std_second.front());
@@ -265,7 +265,7 @@ TEST_CASE("vector<int> modifiers", "[vector]") {
 	}
 	ft_second.insert( ft_it, 222,999 );
 	std_second.insert( std_it, 222, 999 );
-	SECTION("after iterator insert") {
+	SECTION("after iterator insert_node") {
 		REQUIRE(ft_second.capacity() == std_second.capacity());
 		REQUIRE(ft_second.size() == std_second.size());
 		REQUIRE(ft_second.front() == std_second.front());
@@ -278,7 +278,7 @@ TEST_CASE("vector<int> modifiers", "[vector]") {
 	std_it += 25;
 	ft_first.insert( ft_it, ft_second.begin(), ft_second.end() );
 	std_first.insert( std_it, std_second.begin(), std_second.end() );
-	SECTION("after iterator insert") {
+	SECTION("after iterator insert_node") {
 		REQUIRE(ft_first.capacity() == std_first.capacity());
 		REQUIRE(ft_first.size() == std_first.size());
 		REQUIRE(ft_first.front() == std_first.front());
