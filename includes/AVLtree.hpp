@@ -44,12 +44,11 @@ namespace ft{
 		}
 	};
 
-	template< class Key, class T >
+	template< class Pair = ft::pair< class T1, class T2 > >
+//	template< class pair >
 	struct AVLtree{
 
-		typedef Key first_type;
-		typedef T second_type;
-		typedef pair< const first_type, second_type > value_type;
+		typedef Pair value_type;
 		typedef AVLtree* pointer;
 		typedef size_t size_type;
 
@@ -58,18 +57,19 @@ namespace ft{
 		pointer _parent;
 		pointer _left;
 		pointer _right;
+		pointer _begin;
 		pointer _end;
 
 		//-------(De-)Constructors-------//
-		AVLtree( void )
-				: _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ), _end( NULL ){ return; }
+		AVLtree( void ) : _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ),
+							_begin( NULL ), _end( NULL ){ return; }
 
-		AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _left( NULL ),
+		AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _begin( NULL ), _left( NULL ),
 									  _right( NULL ), _end( NULL ){ return; }
 
 		~AVLtree( void ){ return; }
 
-		AVLtree< Key, T >& operator=( const AVLtree& original ){
+		AVLtree< Pair >& operator=( const AVLtree& original ){
 			_input = original._input;
 			_height = original._height;
 			_parent = original._parent;
@@ -117,44 +117,46 @@ namespace ft{
 			return left - right;
 		}
 
-		pointer find_node( first_type key ){
-			if ( key == _input.first )
+		pointer find_node( value_type val ){
+			if ( val.first == _input.first )
 				return this;
-			if ( _left && key < _input.first )
-				return _left->find_node( key );
-			if ( _right && key > _input.first )
-				return _right->find_node( key );
+			if ( _left && val.first < _input.first )
+				return _left->find_node( val );
+			if ( _right && val.first > _input.first )
+				return _right->find_node( val );
 			return NULL;
 		}
 
-		pointer next( first_type key ){
-			if ( _left && _left->_input.first > key )
-				return _left->next( key );
-			else if ( _right && _input.first == key )
-				return _right->next( key );
-			else if (( _parent && _parent->_input.first > key && _parent->_input.first < _input.first ) ||
-					 ( _right && _right->_input.first <= key ) ||
-					 ( _input.first == key )){
-				if ( !_parent )
+		pointer next( value_type val ){
+			if ( this == _begin )
+				return _parent;
+			if ( _left && _left->_input.first > val.first )
+				return _left->next( val );
+			else if ( _right && _input.first == val.first )
+				return _right->next( val );
+			else if (( _parent && _parent->_input.first > val.first && _parent->_input.first < _input.first ) ||
+					 ( _right && _right->_input.first <= val.first ) ||
+					 ( _input.first == val.first )){
+				if ( !_parent || _parent == _end )
 					return _end;
-				return _parent->next( key );
+				return _parent->next( val );
 			}
 			return this;
 		}
 
-		pointer previous( first_type key ){
+		pointer previous( value_type val ){
 			if ( this == _end )
 				return _parent;
-			if ( _right && _right->_input.first < key )
-				return _right->previous( key );
-			else if ( _left && _input.first == key )
-				return _left->previous( key );
-			else if (( _parent && _parent->_input.first < key && _parent->_input.first > _input.first ) ||
-					 ( _left && _left->_input.first >= key ) ||
-					 ( _input.first == key )){
-				if ( !_parent )
-					return NULL;
-				return _parent->previous( key );
+			if ( _right && _right->_input.first < val.first )
+				return _right->previous( val );
+			else if ( _left && _input.first == val.first )
+				return _left->previous( val );
+			else if (( _parent && _parent->_input.first < val.first && _parent->_input.first > _input.first ) ||
+					 ( _left && _left->_input.first >= val.first ) ||
+					 ( _input.first == val.first )){
+				if ( !_parent || _parent == _begin )
+					return _begin;
+				return _parent->previous( val );
 			}
 			return this;
 		}
@@ -234,8 +236,8 @@ namespace ft{
 			}
 		}
 
-		pointer erase( first_type key ){
-			pointer tmp = find_node( key );
+		pointer erase( value_type val ){
+			pointer tmp = find_node( val.first );
 			if ( !tmp )
 				return this;
 			pointer tmp_left = tmp->_left;
