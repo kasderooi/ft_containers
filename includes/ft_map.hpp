@@ -24,12 +24,13 @@ namespace ft{
 			typedef ptrdiff_t difference_type;
 			typedef AVLtree< value_type > node;
 			typedef node* node_pointer;
+			typedef const node* const_node_pointer;
 			typedef typename allocator_type::reference reference;
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef typename ft::BidirectionalIterator< node_pointer, pointer, reference > iterator;
-			typedef typename ft::BidirectionalIterator< node_pointer, const_pointer, const_reference > const_iterator;
+			typedef typename ft::BidirectionalIterator< const_node_pointer, const_pointer, const_reference > const_iterator;
 			typedef typename ft::ReverseIterator< iterator > reverse_iterator;
 			typedef typename ft::ReverseIterator< const_iterator > const_reverse_iterator;
 			typedef typename Alloc::template rebind< node >::other node_alloc;
@@ -235,9 +236,9 @@ namespace ft{
 						tmp->_parent->set_height();
 					}
 					if ( tmp == _end->_parent )
-						_end->_parent = _root->find_node( (--iterator( tmp )).first );
+						_end->_parent = _root->find_node( (*(--iterator( tmp ))).first );
 					if ( tmp == _begin->_parent )
-						_begin->_parent = _root->find_node( (++iterator( tmp )).first );
+						_begin->_parent = _root->find_node( (*(++iterator( tmp ))).first );
 					_root = _root->insert_node( tmp_left )->insert_node( tmp_right );
 				}else if ( tmp_right || tmp_left ){
 					size_type left_height = tmp_left ? tmp_left->_height : 0;

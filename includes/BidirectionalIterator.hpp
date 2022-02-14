@@ -2,6 +2,7 @@
 #define FT_CONTAINERS_BidirectionalIterator_HPP
 
 #include "IteratorUtils.hpp"
+#include "AVLtree.hpp"
 
 namespace ft{
 
@@ -14,11 +15,10 @@ namespace ft{
 			typedef T value_type;
 			typedef BidirectionalIterator< T, Pointer, Reference > iterator;
 			typedef ptrdiff_t difference_type;
-			typedef Pointer pointer;
+			typedef typename T::value_type pointer;
 			typedef Reference reference;
 			typedef Category iterator_category;
 			typedef size_t size_type;
-//			typedef typename value_type::pointer pointer;
 
 		private :
 
