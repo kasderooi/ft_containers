@@ -44,30 +44,35 @@ namespace ft{
 		}
 	};
 
-	template< class Pair = ft::pair< class T1, class T2 > >
-//	template< class pair >
+	template< class Pair >
 	struct AVLtree{
 
 		typedef Pair value_type;
-		typedef AVLtree* pointer;
+		typedef AVLtree* node;
 		typedef size_t size_type;
 
 		value_type _input;
 		size_type _height;
-		pointer _parent;
-		pointer _left;
-		pointer _right;
-		pointer _begin;
-		pointer _end;
+		node _parent;
+		node _left;
+		node _right;
+		node _begin;
+		node _end;
 
 		//-------(De-)Constructors-------//
-		AVLtree( void ) : _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ),
+		explicit AVLtree( void ) : _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ),
 							_begin( NULL ), _end( NULL ){ return; }
 
-		AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _begin( NULL ), _left( NULL ),
+		explicit AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _begin( NULL ), _left( NULL ),
 									  _right( NULL ), _end( NULL ){ return; }
 
+		AVLtree( const AVLtree< Pair >& original ){
+            this = original;
+            return;
+		}
+
 		~AVLtree( void ){ return; }
+
 
 		AVLtree< Pair >& operator=( const AVLtree& original ){
 			_input = original._input;
@@ -75,11 +80,13 @@ namespace ft{
 			_parent = original._parent;
 			_left = original._left;
 			_right = original._right;
+			_begin = original._begin;
+			_end = original._end;
 		}
 
 		//-------Rotators-------//
-		pointer left_rotation( void ){
-			pointer tmp = _left;
+		node left_rotation(void ){
+			node tmp = _left;
 
 			tmp->_parent = _parent;
 			_parent = tmp;
@@ -92,8 +99,8 @@ namespace ft{
 			return tmp->balance();
 		}
 
-		pointer right_rotation( void ){
-			pointer tmp = _right;
+		node right_rotation(void ){
+			node tmp = _right;
 
 			tmp->_parent = _parent;
 			_parent = tmp;
@@ -117,7 +124,7 @@ namespace ft{
 			return left - right;
 		}
 
-		pointer find_node( value_type val ){
+		node find_node(value_type val ){
 			if ( val.first == _input.first )
 				return this;
 			if ( _left && val.first < _input.first )
@@ -127,7 +134,7 @@ namespace ft{
 			return NULL;
 		}
 
-		pointer next( value_type val ){
+		node next(value_type val ){
 			if ( this == _begin )
 				return _parent;
 			if ( _left && _left->_input.first > val.first )
@@ -144,7 +151,7 @@ namespace ft{
 			return this;
 		}
 
-		pointer previous( value_type val ){
+		node previous(value_type val ){
 			if ( this == _end )
 				return _parent;
 			if ( _right && _right->_input.first < val.first )
@@ -172,7 +179,7 @@ namespace ft{
 			_height = 1 + max( height_left, height_right );
 		}
 
-		pointer balance( void ){
+		node balance(void ){
 			if ( _left && ( _left->difference() > 1 || _left->difference() < -1 ) )
 					_left = _left->balance();
 			if ( _right && ( _right->difference() > 1 || _right->difference() < -1 ) )
@@ -195,7 +202,7 @@ namespace ft{
 			return this;
 		}
 
-		pointer insert_node( pointer node ){
+		node insert_node(node node ){
 			if ( !node )
 				return this->balance();
 			if ( node->_input.first > this->_input.first ){
@@ -218,7 +225,7 @@ namespace ft{
 			return this->balance();
 		}
 
-		void insert_right( pointer node ){
+		void insert_right(node node ){
 			if ( _right != NULL )
 				_right = _right->insert_node( node );
 			else{
@@ -227,7 +234,7 @@ namespace ft{
 			}
 		}
 
-		void insert_left( pointer node ){
+		void insert_left(node node ){
 			if ( _left != NULL )
 				_left = _left->insert_node( node );
 			else{
@@ -236,12 +243,12 @@ namespace ft{
 			}
 		}
 
-		pointer erase( value_type val ){
-			pointer tmp = find_node( val.first );
+		node erase(value_type val ){
+			node tmp = find_node(val.first );
 			if ( !tmp )
 				return this;
-			pointer tmp_left = tmp->_left;
-			pointer tmp_right = tmp->_right;
+			node tmp_left = tmp->_left;
+			node tmp_right = tmp->_right;
 			if ( tmp->_parent->_left == tmp ){
 				tmp->_parent->_left = NULL;
 				tmp->_parent->set_height();

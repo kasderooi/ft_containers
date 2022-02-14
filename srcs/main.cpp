@@ -127,6 +127,26 @@ void basicmaptest( void ){
 
 }
 
+void it_test( void ){
+    ft::map<char, int> ft_map1;
+    std::map<char, int> std_map1;
+    ft_map1.insert( ft::pair<int,int>( 'a', 3 ) );
+    std_map1.insert( std::pair<int,int>( 'a', 3 ) );
+    ft_map1['b'] = 2;
+    std_map1['b'] = 2;
+    ft_map1['c'] = 1;
+    std_map1['c'] = 1;
+
+    std::cout << "1ft first\t" << ft_map1.begin()->first << "\tsecond\t" << ft_map1.begin()->second << std::endl;
+    std::cout << "1std first\t" << std_map1.begin()->first << "\tsecond\t" << std_map1.begin()->second << std::endl;
+    std::cout << "2ft first\t" << (--ft_map1.end())->first << "\tsecond\t" << (--ft_map1.end())->second << std::endl;
+    std::cout << "2std first\t" << (--std_map1.end())->first << "\tsecond\t" << (--std_map1.end())->second << std::endl;
+    std::cout << "3ft first\t" << (++ft_map1.rbegin())->first << "\tsecond\t" << (++ft_map1.rbegin())->second << std::endl;
+    std::cout << "3std first\t" << (++std_map1.rbegin())->first << "\tsecond\t" << (++std_map1.rbegin())->second << std::endl;
+    std::cout << "4ft first\t" << (--ft_map1.rend())->first << "\tsecond\t" << (--ft_map1.rend())->second << std::endl;
+    std::cout << "4std first\t" << (--std_map1.rend())->first << "\tsecond\t" << (--std_map1.rend())->second << std::endl;
+}
+
 int main() {
 //	std::map<int,int> Map1;
 //    std::pair<int, int> pair(1, 9 );
@@ -138,7 +158,8 @@ int main() {
 //    Map1[1] = 7;
 //    print_bound( Map1, 1 );
 //    avltest();
-	basicmaptest();
+//	basicmaptest();
+    it_test();
 //	system( "leaks smalltest");
 //	Map1.insert_node(ft::pair<int, int>(2, 8 ) );
 //	Map1.insert_node(ft::pair<int, int>(3, 7 ) );

@@ -76,9 +76,9 @@ namespace ft{
 				return *this;
 			}
 
-			reference operator*( void ){ return *this->_ptr; }
+			reference operator*( void ){ return *_ptr; }
 
-			pointer operator->( void ){ return this->_ptr; }
+			pointer operator->( void ){ return &(*this->_ptr); }
 
 			reference operator[]( difference_type n ) const{ return *( *this + n ); }
 

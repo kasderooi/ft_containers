@@ -6,6 +6,7 @@
 #include "utils.hpp"
 #include "BidirectionalIterator.hpp"
 #include "ReverseIterator.hpp"
+#include "TreeIterator.hpp"
 #include <memory>
 
 namespace ft{
@@ -29,8 +30,8 @@ namespace ft{
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename ft::BidirectionalIterator< node_pointer, pointer, reference > iterator;
-			typedef typename ft::BidirectionalIterator< const_node_pointer, const_pointer, const_reference > const_iterator;
+			typedef typename ft::BidirectionalIterator< value_type, pointer, reference > iterator;
+			typedef typename ft::BidirectionalIterator< value_type, const_pointer, const_reference > const_iterator;
 			typedef typename ft::ReverseIterator< iterator > reverse_iterator;
 			typedef typename ft::ReverseIterator< const_iterator > const_reverse_iterator;
 			typedef typename Alloc::template rebind< node >::other node_alloc;
@@ -129,19 +130,19 @@ namespace ft{
 			}
 
 			reverse_iterator rbegin( void ){
-				return reverse_iterator( _end->_parent );
+				return reverse_iterator( iterator( _end->_parent ) );
 			}
 
 			const_reverse_iterator rbegin( void ) const{
-				return const_reverse_iterator( _end->_parent );
+				return const_reverse_iterator( iterator( _end->_parent ) );
 			}
 
 			reverse_iterator rend( void ){
-				return reverse_iterator( _begin );
+				return reverse_iterator( iterator( _begin ) );
 			}
 
 			const_reverse_iterator rend( void ) const{
-				return const_reverse_iterator( _begin );
+				return const_reverse_iterator( iterator( _begin ) );
 			}
 
 			//-------Capacity-------//
@@ -161,7 +162,7 @@ namespace ft{
 
 			//-------Element access-------//
 			mapped_type& operator[]( const key_type& k ){
-				node_pointer find = _root ? _root->find_node( k ) : NULL;
+				node_pointer find = _root ? _root->find_node( ft::make_pair( k, mapped_type()) ) : NULL;
 				if ( find )
 					return find->_input.second;
 				return ( *( this->insert( ft::make_pair( k, mapped_type())).first )).second;
@@ -210,7 +211,7 @@ namespace ft{
 						 typename ft::enable_if< !is_same< InputIterator, value_type >::value, int >::type = 0 ){
 				InputIterator it = first;
 				while ( it != last ){
-					insert(( *it )->_input );
+					insert( *it );
 					it++;
 				}
 			}
@@ -236,9 +237,9 @@ namespace ft{
 						tmp->_parent->set_height();
 					}
 					if ( tmp == _end->_parent )
-						_end->_parent = _root->find_node( (*(--iterator( tmp ))).first );
+						_end->_parent = _root->find_node( (*(--iterator( tmp ))) );
 					if ( tmp == _begin->_parent )
-						_begin->_parent = _root->find_node( (*(++iterator( tmp ))).first );
+						_begin->_parent = _root->find_node( (*(++iterator( tmp ))) );
 					_root = _root->insert_node( tmp_left )->insert_node( tmp_right );
 				}else if ( tmp_right || tmp_left ){
 					size_type left_height = tmp_left ? tmp_left->_height : 0;
