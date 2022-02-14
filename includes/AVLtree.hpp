@@ -121,7 +121,7 @@ namespace ft{
 			return left - right;
 		}
 
-		node find_node(value_type val ){
+		node find_node( value_type val ){
 			if ( val.first == _input.first )
 				return this;
 			if ( _left && val.first < _input.first )

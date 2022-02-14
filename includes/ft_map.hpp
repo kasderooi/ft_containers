@@ -6,8 +6,6 @@
 #include "utils.hpp"
 #include "BidirectionalIterator.hpp"
 #include "ReverseIterator.hpp"
-#include "TreeIterator.hpp"
-#include <memory>
 
 namespace ft{
 
@@ -172,9 +170,7 @@ namespace ft{
 			pair< iterator, bool > insert( const_reference val ){
 				if ( _root && _root->find_node( val ))
 					return ( ft::make_pair( iterator( _root->find_node( val )), false ));
-				node_pointer tmp = _alloc.allocate( 1 );
-				_alloc.construct( tmp, val );
-				tmp->_end = this->_end;
+				node_pointer tmp = build_node( val );
 				_size++;
 				if ( _root ){
 					_root = _root->insert_node( tmp );
@@ -193,15 +189,15 @@ namespace ft{
 			iterator insert( iterator position, const_reference val ){
 				if ( _root && _root->find_node( val ) )
 					return ( iterator( _root->find_node( val )));
-				node_pointer tmp = _alloc.allocate( 1 );
-				_alloc.construct( tmp, val );
-				tmp->_begin = &this->_begin;
-				tmp->_end = &this->_end;
+				node_pointer pos = _root->find_node( *position );
+				node_pointer tmp = build_node( val );
 				_size++;
-				if ( _compare( ( *position )->_input.first, val.first ) )
-					( *position )->insert_right( tmp );
+				if ( !pos )
+				    _root->insert_node( tmp );
+				else if ( _compare( position->first, val.first ) )
+					pos->insert_right( tmp );
 				else
-					( *position )->insert_left( tmp );
+					pos->insert_left( tmp );
 				_root = _root->balance();
 				return iterator( tmp );
 			}
@@ -298,7 +294,8 @@ namespace ft{
 			}
 
 			size_type count( const key_type& key ) const{
-                if ( find( key ) == _end )
+                node_pointer tmp = _root ? _root->find_node( ft::make_pair( key, mapped_type() ) ) : NULL;
+			    if ( !tmp || tmp == _end )
                     return 0;
                 return 1;
 			}
@@ -347,6 +344,14 @@ namespace ft{
 
 			//-------Operational overloads-------//
 		private:
+
+	        node_pointer build_node( value_type val ){
+			    node_pointer tmp = _alloc.allocate( 1 );
+                _alloc.construct( tmp, val );
+                tmp->_begin = this->_begin;
+                tmp->_end = this->_end;
+                return tmp;
+			}
 
 			void set_endpoints( void ){
 				_begin = _alloc.allocate( 1 );
