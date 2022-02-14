@@ -130,12 +130,30 @@ void basicmaptest( void ){
 void it_test( void ){
     ft::map<char, int> ft_map1;
     std::map<char, int> std_map1;
-    ft_map1.insert( ft::pair<int,int>( 'a', 3 ) );
-    std_map1.insert( std::pair<int,int>( 'a', 3 ) );
+    ft::map<char, int> ft_map2;
+    std::map<char, int> std_map2;
+    for ( char ch = 'a'; ch < 'z'; ch++ ){
+        ft_map2.insert( ft::pair<char, int>( ch, ch ) );
+        std_map2.insert( std::pair<char, int>( ch, ch ) );
+    }
+    ft_map1.insert( ft::pair<char,int>( 'a', 3 ) );
+    std_map1.insert( std::pair<char,int>( 'a', 3 ) );
     ft_map1['b'] = 2;
     std_map1['b'] = 2;
     ft_map1['c'] = 1;
     std_map1['c'] = 1;
+    ft_map1.insert( ft_map2.begin(), ft_map2.end() );
+    std_map1.insert( std_map2.begin(), std_map2.end() );
+    ft_map1.erase( ft_map1.begin() );
+    std_map1.erase( std_map1.begin() );
+    ft_map1.erase( 'z' );
+    ft_map1.erase( 'z' );
+    std_map1.erase( 'z' );
+    std_map1.erase( 'z' );
+    ft_map1.erase( --ft_map1.end() );
+    std_map1.erase( --std_map1.end() );
+//    ft_map1.erase( --ft_map1.end() );
+//    std_map1.erase( --std_map1.end() );
 
     std::cout << "1ft first\t" << ft_map1.begin()->first << "\tsecond\t" << ft_map1.begin()->second << std::endl;
     std::cout << "1std first\t" << std_map1.begin()->first << "\tsecond\t" << std_map1.begin()->second << std::endl;

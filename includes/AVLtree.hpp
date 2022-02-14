@@ -6,43 +6,40 @@
 #include "ft_pair.hpp"
 #include "utils.hpp"
 
-#define LEFT 0
-#define RIGHT 1
-
 namespace ft{
 
-	struct AVLprint{
-		int _layers;
-		std::vector< int >* array;
-
-		AVLprint( int layers ){
-			_layers = layers;
-			array = new std::vector< int >[layers];
-		}
-
-		void add( int layer, int input ){
-			array[layer - 1].push_back( input );
-		}
-
-		void print( void ){
-			while ( _layers > 0 ){
-				_layers--;
-				std::cout << " ";
-				for ( int i = 0; i < _layers; i++ )
-					std::cout << "\t";
-				for ( std::vector< int >::iterator it = array[_layers].begin(); it < array[_layers].end(); it++ ){
-					if ( *it )
-						std::cout << *it;
-					else
-						std::cout << "_";
-					for ( int i = 0; i <= _layers; i++ )
-						std::cout << "  ";
-				}
-				std::cout << std::endl;
-			}
-			delete[] array;
-		}
-	};
+//	struct AVLprint{
+//		int _layers;
+//		std::vector< int >* array;
+//
+//		AVLprint( int layers ){
+//			_layers = layers;
+//			array = new std::vector< int >[layers];
+//		}
+//
+//		void add( int layer, int input ){
+//			array[layer - 1].push_back( input );
+//		}
+//
+//		void print( void ){
+//			while ( _layers > 0 ){
+//				_layers--;
+//				std::cout << " ";
+//				for ( int i = 0; i < _layers; i++ )
+//					std::cout << "\t";
+//				for ( std::vector< int >::iterator it = array[_layers].begin(); it < array[_layers].end(); it++ ){
+//					if ( *it )
+//						std::cout << *it;
+//					else
+//						std::cout << "_";
+//					for ( int i = 0; i <= _layers; i++ )
+//						std::cout << "  ";
+//				}
+//				std::cout << std::endl;
+//			}
+//			delete[] array;
+//		}
+//	};
 
 	template< class Pair >
 	struct AVLtree{
@@ -259,48 +256,48 @@ namespace ft{
 			return this->insert_node( tmp_left )->insert_node( tmp_right );
 		}
 
-		//-------Printer-------//
-		int set_print( AVLprint data, int count, int* layer ){
-			data.add( *layer, _input.first );
-			if ( _left ){
-				( *layer )--;
-				count = _left->set_print( data, ++count, layer );
-			}else{
-				if ( *layer > 1 ){
-					data.add( *layer - 1, 0 );
-					count++;
-				}
-			}
-			if ( _right ){
-				( *layer )--;
-				count = _right->set_print( data, ++count, layer );
-			}else{
-				if ( *layer > 1 ){
-					data.add( *layer - 1, 0 );
-					count++;
-				}
-			}
-			( *layer )++;
-			return count;
-		}
-
-		void print( void ){
-			int layer = _height;
-			AVLprint data( layer );
-			this->set_print( data, 1, &layer );
-			data.print();
-		}
-
-		void print_nodes( void ){
-			std::cout << "this " << _input.first << " Height " << _height;
-			if ( _parent )
-				std::cout << " parent " << _parent->_input.first;
-			if ( _left )
-				std::cout << " left " << _left->_input.first;
-			if ( _right )
-				std::cout << " right " << _right->_input.first;
-			std::cout << std::endl;
-		}
+//		//-------Printer-------//
+//		int set_print( AVLprint data, int count, int* layer ){
+//			data.add( *layer, _input.first );
+//			if ( _left ){
+//				( *layer )--;
+//				count = _left->set_print( data, ++count, layer );
+//			}else{
+//				if ( *layer > 1 ){
+//					data.add( *layer - 1, 0 );
+//					count++;
+//				}
+//			}
+//			if ( _right ){
+//				( *layer )--;
+//				count = _right->set_print( data, ++count, layer );
+//			}else{
+//				if ( *layer > 1 ){
+//					data.add( *layer - 1, 0 );
+//					count++;
+//				}
+//			}
+//			( *layer )++;
+//			return count;
+//		}
+//
+//		void print( void ){
+//			int layer = _height;
+//			AVLprint data( layer );
+//			this->set_print( data, 1, &layer );
+//			data.print();
+//		}
+//
+//		void print_nodes( void ){
+//			std::cout << "this " << _input.first << " Height " << _height;
+//			if ( _parent )
+//				std::cout << " parent " << _parent->_input.first;
+//			if ( _left )
+//				std::cout << " left " << _left->_input.first;
+//			if ( _right )
+//				std::cout << " right " << _right->_input.first;
+//			std::cout << std::endl;
+//		}
 
 	};
 
