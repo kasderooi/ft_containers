@@ -87,13 +87,14 @@ namespace ft{
 			return left - right;
 		}
 
-		node find_node( value_type val ){
+		template< class Compare >
+		node find_node( value_type val, Compare comp ){
 			if ( val.first == _input.first )
 				return this;
-			if ( _left && val.first < _input.first )
-				return _left->find_node( val );
-			if ( _right && val.first > _input.first )
-				return _right->find_node( val );
+			if ( _left && comp( val.first, _input.first ))
+				return _left->find_node( val, comp );
+			if ( _right && comp( _input.first, val.first ))
+				return _right->find_node( val, comp );
 			return NULL;
 		}
 
@@ -165,19 +166,20 @@ namespace ft{
 			return this;
 		}
 
-		node insert_node( node node ){
+		template< class Compare >
+		node insert_node( node node, Compare comp ){
 			if ( !node )
 				return this->balance();
-			if ( node->_input.first > this->_input.first ){
+			if ( comp( this->_input.first, node->_input.first )){
 				if ( _right != NULL )
-					_right = _right->insert_node( node );
+					_right = _right->insert_node( node, comp );
 				else{
 					_right = node;
 					node->_parent = this;
 				}
-			}else if ( node->_input.first < this->_input.first ){
+			}else if ( comp( node->_input.first, this->_input.first )){
 				if ( _left != NULL )
-					_left = _left->insert_node( node );
+					_left = _left->insert_node( node, comp );
 				else{
 					_left = node;
 					node->_parent = this;
@@ -188,39 +190,41 @@ namespace ft{
 			return this->balance();
 		}
 
-		void insert_right( node node ){
+		template< class Compare >
+		void insert_right( node node, Compare comp ){
 			if ( _right != NULL )
-				_right = _right->insert_node( node );
+				_right = _right->insert_node( node, comp );
 			else{
 				_right = node;
 				node->_parent = this;
 			}
 		}
 
-		void insert_left( node node ){
+		template< class Compare >
+		void insert_left( node node, Compare comp ){
 			if ( _left != NULL )
-				_left = _left->insert_node( node );
+				_left = _left->insert_node( node, comp );
 			else{
 				_left = node;
 				node->_parent = this;
 			}
 		}
 
-		node erase( value_type val ){
-			node tmp = find_node( val.first );
-			if ( !tmp )
-				return this;
-			node tmp_left = tmp->_left;
-			node tmp_right = tmp->_right;
-			if ( tmp->_parent->_left == tmp ){
-				tmp->_parent->_left = NULL;
-				tmp->_parent->set_height();
-			}else if ( tmp->_parent->_right == tmp ){
-				tmp->_parent->_right = NULL;
-				tmp->_parent->set_height();
-			}
-			return this->insert_node( tmp_left )->insert_node( tmp_right );
-		}
+//		node erase( value_type val ){
+//			node tmp = find_node( val.first );
+//			if ( !tmp )
+//				return this;
+//			node tmp_left = tmp->_left;
+//			node tmp_right = tmp->_right;
+//			if ( tmp->_parent->_left == tmp ){
+//				tmp->_parent->_left = NULL;
+//				tmp->_parent->set_height();
+//			}else if ( tmp->_parent->_right == tmp ){
+//				tmp->_parent->_right = NULL;
+//				tmp->_parent->set_height();
+//			}
+//			return this->insert_node( tmp_left )->insert_node( tmp_right );
+//		}
 
 	};
 
