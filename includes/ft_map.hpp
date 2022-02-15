@@ -128,19 +128,19 @@ namespace ft{
 			}
 
 			reverse_iterator rbegin( void ){
-				return reverse_iterator( iterator( _end->_parent ) );
+				return reverse_iterator( iterator( _end->_parent ));
 			}
 
 			const_reverse_iterator rbegin( void ) const{
-				return const_reverse_iterator( iterator( _end->_parent ) );
+				return const_reverse_iterator( iterator( _end->_parent ));
 			}
 
 			reverse_iterator rend( void ){
-				return reverse_iterator( iterator( _begin ) );
+				return reverse_iterator( iterator( _begin ));
 			}
 
 			const_reverse_iterator rend( void ) const{
-				return const_reverse_iterator( iterator( _begin ) );
+				return const_reverse_iterator( iterator( _begin ));
 			}
 
 			//-------Capacity-------//
@@ -160,10 +160,10 @@ namespace ft{
 
 			//-------Element access-------//
 			mapped_type& operator[]( const key_type& key ){
-				node_pointer find = _root ? _root->find_node( ft::make_pair(key, mapped_type()) ) : NULL;
+				node_pointer find = _root ? _root->find_node( ft::make_pair( key, mapped_type())) : NULL;
 				if ( find )
 					return find->_input.second;
-				return ( *( this->insert( ft::make_pair(key, mapped_type())).first )).second;
+				return ( *( this->insert( ft::make_pair( key, mapped_type())).first )).second;
 			}
 
 			//-------Modifiers-------//
@@ -174,9 +174,9 @@ namespace ft{
 				_size++;
 				if ( _root ){
 					_root = _root->insert_node( tmp );
-					if ( _compare( val.first, _begin->_parent->_input.first ) )
+					if ( _compare( val.first, _begin->_parent->_input.first ))
 						this->_begin->_parent = tmp;
-					if ( _compare( _end->_parent->_input.first, val.first )  )
+					if ( _compare( _end->_parent->_input.first, val.first ))
 						this->_end->_parent = tmp;
 				}else{
 					_root = tmp;
@@ -187,14 +187,14 @@ namespace ft{
 			}
 
 			iterator insert( iterator position, const_reference val ){
-				if ( _root && _root->find_node( val ) )
+				if ( _root && _root->find_node( val ))
 					return ( iterator( _root->find_node( val )));
 				node_pointer pos = _root->find_node( *position );
 				node_pointer tmp = build_node( val );
 				_size++;
 				if ( !pos )
-				    _root->insert_node( tmp );
-				else if ( _compare( position->first, val.first ) )
+					_root->insert_node( tmp );
+				else if ( _compare( position->first, val.first ))
 					pos->insert_right( tmp );
 				else
 					pos->insert_left( tmp );
@@ -219,14 +219,14 @@ namespace ft{
 			size_type erase( const key_type& key ){
 				if ( !_root || !key )
 					return 0;
-				node_pointer tmp = _root->find_node( ft::make_pair( key, mapped_type() ) );
+				node_pointer tmp = _root->find_node( ft::make_pair( key, mapped_type()));
 				if ( !tmp )
 					return 0;
 				node_pointer tmp_left = tmp->_left ? tmp->_left->balance() : NULL;
 				node_pointer tmp_right = tmp->_right ? tmp->_right->balance() : NULL;
 				if ( tmp != _root ){
-                    erase_node( tmp );
-                    _root = _root->insert_node( tmp_left )->insert_node( tmp_right );
+					erase_node( tmp );
+					_root = _root->insert_node( tmp_left )->insert_node( tmp_right );
 				}else if ( tmp_right || tmp_left ){
 					erase_root( tmp_left, tmp_right );
 				}else{
@@ -261,14 +261,6 @@ namespace ft{
 				erase( begin(), end());
 			}
 
-//			void print( void ){
-//				_root->print();
-//			}
-//
-//			void print_node( key_type key ){
-//				_root->find_node( ft::make_pair( key, mapped_type() ) )->print_nodes();
-//			}
-
 			//-------Observers-------//
 			key_compare key_comp( void ) const{
 				return _compare;
@@ -280,84 +272,84 @@ namespace ft{
 
 			//-------Map Operations-------//
 			iterator find( const key_type& key ){
-				node_pointer tmp = _root ? _root->find_node( ft::make_pair( key, mapped_type() ) ) : NULL;
+				node_pointer tmp = _root ? _root->find_node( ft::make_pair( key, mapped_type())) : NULL;
 				if ( tmp )
 					return iterator( tmp );
 				return iterator( _end );
 			}
 
 			const_iterator find( const key_type& key ) const{
-				node_pointer tmp = _root ? _root->find_node( ft::make_pair( key, mapped_type() ) ) : NULL;
+				node_pointer tmp = _root ? _root->find_node( ft::make_pair( key, mapped_type())) : NULL;
 				if ( tmp )
 					return iterator( tmp );
 				return iterator( _end );
 			}
 
 			size_type count( const key_type& key ) const{
-                node_pointer tmp = _root ? _root->find_node( ft::make_pair( key, mapped_type() ) ) : NULL;
-			    if ( !tmp || tmp == _end )
-                    return 0;
-                return 1;
+				node_pointer tmp = _root ? _root->find_node( ft::make_pair( key, mapped_type())) : NULL;
+				if ( !tmp || tmp == _end )
+					return 0;
+				return 1;
 			}
 
 			iterator lower_bound( const key_type& key ){
-			    iterator it = begin();
-                while ( _compare( it->first, key) )
-                    it++;
-                return it;
+				iterator it = begin();
+				while ( _compare( it->first, key ))
+					it++;
+				return it;
 			}
 
 			const_iterator lower_bound( const key_type& key ) const{
-                const_iterator it = begin();
-                while ( _compare( it->first, key) )
-                    it++;
-                return it;
+				const_iterator it = begin();
+				while ( _compare( it->first, key ))
+					it++;
+				return it;
 			}
 
 			iterator upper_bound( const key_type& key ){
-                iterator it = lower_bound( key );
-                if ( _compare( key, it->first ) )
-			        return it;
-                return ++it;
+				iterator it = lower_bound( key );
+				if ( _compare( key, it->first ))
+					return it;
+				return ++it;
 			}
 
 			const_iterator upper_bound( const key_type& key ) const{
-                const_iterator it = lower_bound( key );
-                if ( _compare( key, it->first ) )
-                    return it;
-                return ++it;
+				const_iterator it = lower_bound( key );
+				if ( _compare( key, it->first ))
+					return it;
+				return ++it;
 			}
 
-			pair<iterator,iterator> equal_range( const key_type& key ){
-                iterator it = lower_bound( key );
-                if ( _compare( key, it->first ) )
-                    return ft::make_pair(it, it);
-                return ft::make_pair(it, ++it);
+			pair< iterator, iterator > equal_range( const key_type& key ){
+				iterator it = lower_bound( key );
+				if ( _compare( key, it->first ))
+					return ft::make_pair( it, it );
+				return ft::make_pair( it, ++it );
 			}
 
-			pair<const_iterator,const_iterator> equal_range( const key_type& key ) const{
-                const_iterator it = lower_bound( key );
-                if ( _compare( key, it->first ) )
-                    return ft::make_pair(it, it);
-                return ft::make_pair(it, ++it);
+			pair< const_iterator, const_iterator > equal_range( const key_type& key ) const{
+				const_iterator it = lower_bound( key );
+				if ( _compare( key, it->first ))
+					return ft::make_pair( it, it );
+				return ft::make_pair( it, ++it );
 			}
 
 			//-------Operational overloads-------//
 		private:
 
-	        node_pointer build_node( value_type val ){
-			    node_pointer tmp = _alloc.allocate( 1 );
-                _alloc.construct( tmp, val );
-                tmp->_begin = this->_begin;
-                tmp->_end = this->_end;
-                return tmp;
+			node_pointer build_node( value_type val ){
+				node_pointer tmp = _alloc.allocate( 1 );
+				_alloc.construct( tmp, val );
+				tmp->_begin = this->_begin;
+				tmp->_end = this->_end;
+				return tmp;
 			}
 
 			void set_endpoints( void ){
 				_begin = _alloc.allocate( 1 );
-				_alloc.construct( _begin, ft::make_pair( key_type(), mapped_type() ) );
+				_alloc.construct( _begin, ft::make_pair( key_type(), mapped_type()));
 				_end = _alloc.allocate( 1 );
-				_alloc.construct( _end, ft::make_pair( key_type(), mapped_type() ) );
+				_alloc.construct( _end, ft::make_pair( key_type(), mapped_type()));
 				_begin->_parent = _end;
 				_begin->_begin = _begin;
 				_begin->_end = _end;
@@ -366,52 +358,82 @@ namespace ft{
 				_end->_end = _end;
 			}
 
-            void erase_node( node_pointer tmp ){
-                if ( tmp->_parent->_left == tmp ){
-                    tmp->_parent->_left = NULL;
-                    tmp->_parent->set_height();
-                }else if ( tmp->_parent->_right == tmp ){
-                    tmp->_parent->_right = NULL;
-                    tmp->_parent->set_height();
-                }
-                if ( tmp == _end->_parent )
-                    _end->_parent = _root->find_node( (*(--iterator( tmp ))) );
-                if ( tmp == _begin->_parent )
-                    _begin->_parent = _root->find_node( (*(++iterator( tmp ))) );
-            }
+			void erase_node( node_pointer tmp ){
+				if ( tmp->_parent->_left == tmp ){
+					tmp->_parent->_left = NULL;
+					tmp->_parent->set_height();
+				}else if ( tmp->_parent->_right == tmp ){
+					tmp->_parent->_right = NULL;
+					tmp->_parent->set_height();
+				}
+				if ( tmp == _end->_parent )
+					_end->_parent = _root->find_node( *( --iterator( tmp )));
+				if ( tmp == _begin->_parent )
+					_begin->_parent = _root->find_node( *( ++iterator( tmp )));
+			}
 
-            void erase_root( node_pointer tmp_left, node_pointer tmp_right ){
-                size_type left_height = tmp_left ? tmp_left->_height : 0;
-                size_type right_height = tmp_right ? tmp_right->_height : 0;
-                if ( tmp_right && ( !tmp_left || _compare( right_height, left_height ) )){
-                    tmp_right->_parent = NULL;
-                    _root = tmp_right;
-                    _root = _root->insert_node( tmp_left );
-                }else{
-                    tmp_left->_parent = NULL;
-                    _root = tmp_left;
-                    _root = _root->insert_node( tmp_right );
-                }
-            }
+			void erase_root( node_pointer tmp_left, node_pointer tmp_right ){
+				size_type left_height = tmp_left ? tmp_left->_height : 0;
+				size_type right_height = tmp_right ? tmp_right->_height : 0;
+				if ( tmp_right && ( !tmp_left || _compare( right_height, left_height ))){
+					tmp_right->_parent = NULL;
+					_root = tmp_right;
+					_root = _root->insert_node( tmp_left );
+				}else{
+					tmp_left->_parent = NULL;
+					_root = tmp_left;
+					_root = _root->insert_node( tmp_right );
+				}
+			}
+
+			allocator_type get_allocator() const{
+				return _alloc;
+			}
+
 	};
 	//-------Non-member function overloads-------//
-//		template <class Key, class T, class Compare, class Allocator>
-//		bool operator==(const map<Key, T, Compare, Allocator>& x, const map<Key, T, Compare, Allocator>& y);
-//
-//		template <class Key, class T, class Compare, class Allocator>
-//		bool operator< (const map<Key, T, Compare, Allocator>& x, const map<Key, T, Compare, Allocator>& y);
-//
-//		template <class Key, class T, class Compare, class Allocator>
-//		bool operator!=(const map<Key, T, Compare, Allocator>& x, const map<Key, T, Compare, Allocator>& y);
-//
-//		template <class Key, class T, class Compare, class Allocator>
-//		bool operator> (const map<Key, T, Compare, Allocator>& x, const map<Key, T, Compare, Allocator>& y);
-//
-//		template <class Key, class T, class Compare, class Allocator>
-//		bool operator>=(const map<Key, T, Compare, Allocator>& x, const map<Key, T, Compare, Allocator>& y);
-//
-//		template <class Key, class T, class Compare, class Allocator>
-//		bool operator<=(const map<Key, T, Compare, Allocator>& x, const map<Key, T, Compare, Allocator>& y);
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator==( const map< Key, T, Compare, Alloc >& lhs, const map< Key, T, Compare, Alloc >& rhs ){
+		if ( lhs.size() != rhs.size())
+			return false;
+		typename ft::map< Key, T >::const_iterator lhs_it = lhs.begin();
+		typename ft::map< Key, T >::const_iterator rhs_it = rhs.begin();
+		for ( ; lhs_it != lhs.end() && rhs_it != rhs.end(); lhs_it++, rhs_it++ )
+			if ( *lhs_it != *rhs_it )
+				return false;
+		return true;
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator!=( const map< Key, T, Compare, Alloc >& lhs, const map< Key, T, Compare, Alloc >& rhs ){
+		return !( lhs == rhs );
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator<( const map< Key, T, Compare, Alloc >& lhs, const map< Key, T, Compare, Alloc >& rhs ){
+		return ( ft::lexicographical_compare( lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator>( const map< Key, T, Compare, Alloc >& lhs, const map< Key, T, Compare, Alloc >& rhs ){
+		return rhs < lhs;
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator<=( const map< Key, T, Compare, Alloc >& lhs, const map< Key, T, Compare, Alloc >& rhs ){
+		return !( lhs > rhs );
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator>=( const map< Key, T, Compare, Alloc >& lhs, const map< Key, T, Compare, Alloc >& rhs ){
+		return !( lhs < rhs );
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	void swap( map< Key, T, Compare, Alloc >& x, map< Key, T, Compare, Alloc >& y ){
+		x.swap( y );
+	}
 }
 
 

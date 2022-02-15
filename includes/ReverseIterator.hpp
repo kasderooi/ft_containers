@@ -48,7 +48,6 @@ namespace ft{
 				return ret;
 			}
 
-			//		iterator operator++( void ) { this->_ptr++; return this; }
 			iterator& operator--( void ){
 				this->_ptr++;
 				return *this;
@@ -62,10 +61,12 @@ namespace ft{
 
 			iterator operator+( difference_type n ){ return iterator( this->_ptr - n ); }
 
-//			size_type operator+( iterator n ) { return this->_ptr - n._ptr; }
+//			size_type operator+( iterator n ){ return this->_ptr - n._ptr; }
+
 			iterator operator-( difference_type n ){ return iterator( this->_ptr + n ); }
 
-//			size_type operator-( iterator n ) { return this->_ptr + n._ptr; }
+//			size_type operator-( iterator n ){ return this->_ptr + n._ptr; }
+
 			iterator& operator+=( difference_type n ){
 				this->_ptr -= n;
 				return *this;
@@ -78,7 +79,7 @@ namespace ft{
 
 			reference operator*( void ){ return *_ptr; }
 
-			pointer operator->( void ){ return &(*this->_ptr); }
+			pointer operator->( void ){ return &( *this->_ptr ); }
 
 			reference operator[]( difference_type n ) const{ return *( *this + n ); }
 

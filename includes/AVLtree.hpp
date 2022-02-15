@@ -1,45 +1,10 @@
 #ifndef AVLTREE_HPP
 #define AVLTREE_HPP
 
-#include <iostream>
-#include <vector>
 #include "ft_pair.hpp"
 #include "utils.hpp"
 
 namespace ft{
-
-//	struct AVLprint{
-//		int _layers;
-//		std::vector< int >* array;
-//
-//		AVLprint( int layers ){
-//			_layers = layers;
-//			array = new std::vector< int >[layers];
-//		}
-//
-//		void add( int layer, int input ){
-//			array[layer - 1].push_back( input );
-//		}
-//
-//		void print( void ){
-//			while ( _layers > 0 ){
-//				_layers--;
-//				std::cout << " ";
-//				for ( int i = 0; i < _layers; i++ )
-//					std::cout << "\t";
-//				for ( std::vector< int >::iterator it = array[_layers].begin(); it < array[_layers].end(); it++ ){
-//					if ( *it )
-//						std::cout << *it;
-//					else
-//						std::cout << "_";
-//					for ( int i = 0; i <= _layers; i++ )
-//						std::cout << "  ";
-//				}
-//				std::cout << std::endl;
-//			}
-//			delete[] array;
-//		}
-//	};
 
 	template< class Pair >
 	struct AVLtree{
@@ -58,14 +23,15 @@ namespace ft{
 
 		//-------(De-)Constructors-------//
 		explicit AVLtree( void ) : _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ),
-							_begin( NULL ), _end( NULL ){ return; }
+								   _begin( NULL ), _end( NULL ){ return; }
 
-		explicit AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _begin( NULL ), _left( NULL ),
-									  _right( NULL ), _end( NULL ){ return; }
+		explicit AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _begin( NULL ),
+											   _left( NULL ),
+											   _right( NULL ), _end( NULL ){ return; }
 
 		AVLtree( const AVLtree< Pair >& original ){
-            this = original;
-            return;
+			this = original;
+			return;
 		}
 
 		~AVLtree( void ){ return; }
@@ -82,7 +48,7 @@ namespace ft{
 		}
 
 		//-------Rotators-------//
-		node left_rotation(void ){
+		node left_rotation( void ){
 			node tmp = _left;
 
 			tmp->_parent = _parent;
@@ -96,7 +62,7 @@ namespace ft{
 			return tmp->balance();
 		}
 
-		node right_rotation(void ){
+		node right_rotation( void ){
 			node tmp = _right;
 
 			tmp->_parent = _parent;
@@ -131,7 +97,7 @@ namespace ft{
 			return NULL;
 		}
 
-		node next(value_type val ){
+		node next( value_type val ){
 			if ( this == _begin )
 				return _parent;
 			if ( _left && _left->_input.first > val.first )
@@ -148,7 +114,7 @@ namespace ft{
 			return this;
 		}
 
-		node previous(value_type val ){
+		node previous( value_type val ){
 			if ( this == _end )
 				return _parent;
 			if ( _right && _right->_input.first < val.first )
@@ -176,10 +142,10 @@ namespace ft{
 			_height = 1 + max( height_left, height_right );
 		}
 
-		node balance(void ){
-			if ( _left && ( _left->difference() > 1 || _left->difference() < -1 ) )
-					_left = _left->balance();
-			if ( _right && ( _right->difference() > 1 || _right->difference() < -1 ) )
+		node balance( void ){
+			if ( _left && ( _left->difference() > 1 || _left->difference() < -1 ))
+				_left = _left->balance();
+			if ( _right && ( _right->difference() > 1 || _right->difference() < -1 ))
 				_right = _right->balance();
 			int difference = this->difference();
 			if ( difference > 1 ){
@@ -199,7 +165,7 @@ namespace ft{
 			return this;
 		}
 
-		node insert_node(node node ){
+		node insert_node( node node ){
 			if ( !node )
 				return this->balance();
 			if ( node->_input.first > this->_input.first ){
@@ -222,7 +188,7 @@ namespace ft{
 			return this->balance();
 		}
 
-		void insert_right(node node ){
+		void insert_right( node node ){
 			if ( _right != NULL )
 				_right = _right->insert_node( node );
 			else{
@@ -231,7 +197,7 @@ namespace ft{
 			}
 		}
 
-		void insert_left(node node ){
+		void insert_left( node node ){
 			if ( _left != NULL )
 				_left = _left->insert_node( node );
 			else{
@@ -240,8 +206,8 @@ namespace ft{
 			}
 		}
 
-		node erase(value_type val ){
-			node tmp = find_node(val.first );
+		node erase( value_type val ){
+			node tmp = find_node( val.first );
 			if ( !tmp )
 				return this;
 			node tmp_left = tmp->_left;
@@ -255,49 +221,6 @@ namespace ft{
 			}
 			return this->insert_node( tmp_left )->insert_node( tmp_right );
 		}
-
-//		//-------Printer-------//
-//		int set_print( AVLprint data, int count, int* layer ){
-//			data.add( *layer, _input.first );
-//			if ( _left ){
-//				( *layer )--;
-//				count = _left->set_print( data, ++count, layer );
-//			}else{
-//				if ( *layer > 1 ){
-//					data.add( *layer - 1, 0 );
-//					count++;
-//				}
-//			}
-//			if ( _right ){
-//				( *layer )--;
-//				count = _right->set_print( data, ++count, layer );
-//			}else{
-//				if ( *layer > 1 ){
-//					data.add( *layer - 1, 0 );
-//					count++;
-//				}
-//			}
-//			( *layer )++;
-//			return count;
-//		}
-//
-//		void print( void ){
-//			int layer = _height;
-//			AVLprint data( layer );
-//			this->set_print( data, 1, &layer );
-//			data.print();
-//		}
-//
-//		void print_nodes( void ){
-//			std::cout << "this " << _input.first << " Height " << _height;
-//			if ( _parent )
-//				std::cout << " parent " << _parent->_input.first;
-//			if ( _left )
-//				std::cout << " left " << _left->_input.first;
-//			if ( _right )
-//				std::cout << " right " << _right->_input.first;
-//			std::cout << std::endl;
-//		}
 
 	};
 

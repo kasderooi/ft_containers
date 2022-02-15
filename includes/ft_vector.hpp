@@ -4,6 +4,7 @@
 #include <exception>
 #include "RandomAccessIterator.hpp"
 #include "ReverseIterator.hpp"
+#include "utils.hpp"
 
 namespace ft{
 
@@ -138,7 +139,7 @@ namespace ft{
 
 			size_type capacity( void ) const{ return _capacity; }
 
-			bool empty( void ) const{ if ( _size == 0 ) return true; else return false; }
+			bool empty( void ) const{ if ( _size == 0 ) return true;else return false; }
 
 			void reserve( size_type n ){
 				if ( n <= _capacity )

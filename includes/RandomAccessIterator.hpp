@@ -6,7 +6,7 @@
 namespace ft{
 
 
-	template< class T, class Pointer = T *, class Reference = T &, class Category = ft::random_access_iterator_tag >
+	template< class T, class Pointer = T*, class Reference = T&, class Category = ft::random_access_iterator_tag >
 	class RandomAccessIterator{
 
 		public:
@@ -25,20 +25,20 @@ namespace ft{
 
 		public:
 
-			RandomAccessIterator(void ) : _ptr(NULL ){ return; }
+			RandomAccessIterator( void ) : _ptr( NULL ){ return; }
 
-			RandomAccessIterator(pointer ptr ) : _ptr(ptr ){ return; }
+			RandomAccessIterator( pointer ptr ) : _ptr( ptr ){ return; }
 
-			RandomAccessIterator(const iterator &original ) : _ptr(original._ptr ){ return; }
+			RandomAccessIterator( const iterator& original ) : _ptr( original._ptr ){ return; }
 
-			~RandomAccessIterator(void ){ return; }
+			~RandomAccessIterator( void ){ return; }
 
-			iterator &operator=( const iterator &original ){
+			iterator& operator=( const iterator& original ){
 				this->_ptr = original._ptr;
-				return *this ;
+				return *this;
 			}
 
-			iterator &operator++( void ){
+			iterator& operator++( void ){
 				this->_ptr++;
 				return *this;
 			}
@@ -49,8 +49,7 @@ namespace ft{
 				return ret;
 			}
 
-			//		iterator operator++( void ) { this->_ptr++; return this; }
-			iterator &operator--( void ){
+			iterator& operator--( void ){
 				this->_ptr--;
 				return *this;
 			}
@@ -69,12 +68,12 @@ namespace ft{
 
 			size_type operator-( iterator n ){ return this->_ptr - n._ptr; }
 
-			iterator &operator+=( difference_type n ){
+			iterator& operator+=( difference_type n ){
 				this->_ptr += n;
 				return *this;
 			}
 
-			iterator &operator-=( difference_type n ){
+			iterator& operator-=( difference_type n ){
 				this->_ptr -= n;
 				return *this;
 			}
@@ -85,17 +84,17 @@ namespace ft{
 
 			reference operator[]( difference_type n ) const{ return *( *this + n ); }
 
-			bool operator==( const iterator &subject ) const{ return this->_ptr == subject._ptr; }
+			bool operator==( const iterator& subject ) const{ return this->_ptr == subject._ptr; }
 
-			bool operator!=( const iterator &subject ) const{ return this->_ptr != subject._ptr; }
+			bool operator!=( const iterator& subject ) const{ return this->_ptr != subject._ptr; }
 
-			bool operator<( const iterator &subject ) const{ return this->_ptr < subject._ptr; }
+			bool operator<( const iterator& subject ) const{ return this->_ptr < subject._ptr; }
 
-			bool operator>( const iterator &subject ) const{ return this->_ptr > subject._ptr; }
+			bool operator>( const iterator& subject ) const{ return this->_ptr > subject._ptr; }
 
-			bool operator<=( const iterator &subject ) const{ return this->_ptr <= subject._ptr; }
+			bool operator<=( const iterator& subject ) const{ return this->_ptr <= subject._ptr; }
 
-			bool operator>=( const iterator &subject ) const{ return this->_ptr >= subject._ptr; }
+			bool operator>=( const iterator& subject ) const{ return this->_ptr >= subject._ptr; }
 
 	};
 
