@@ -1,7 +1,3 @@
-//
-// Created by Kester kas De rooij on 11/24/21.
-//
-
 #include "catch.hpp"
 #include "../includes/containers/ft_vector.hpp"
 #include <vector>

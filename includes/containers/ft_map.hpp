@@ -78,7 +78,7 @@ namespace ft{
 			map( InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
 				 const allocator_type& alloc = allocator_type()) : _alloc( alloc ), _size( 0 ), _root( NULL ),
 																   _begin( NULL ), _end( NULL ), _compare( comp ){
-			    InputIterator tmp = first;
+				InputIterator tmp = first;
 				set_endpoints();
 				while ( tmp != last ){
 					this->insert( *tmp );
@@ -96,7 +96,7 @@ namespace ft{
 
 			~map( void ){
 				clear();
-                clear_endpoints();
+				clear_endpoints();
 				return;
 			}
 
@@ -327,14 +327,14 @@ namespace ft{
 
 			pair< const_iterator, const_iterator > equal_range( const key_type& key ) const{
 				const_iterator it = lower_bound( key );
-                if ( _compare( key, it->first ))
-                    return ft::make_pair( it, it );
-                return ft::make_pair( it, ++it );
+				if ( _compare( key, it->first ))
+					return ft::make_pair( it, it );
+				return ft::make_pair( it, ++it );
 			}
 
-            allocator_type get_allocator() const{
-                return _alloc;
-            }
+			allocator_type get_allocator() const{
+				return _alloc;
+			}
 
 			//-------Operational overloads-------//
 		private:
@@ -361,10 +361,10 @@ namespace ft{
 			}
 
 			void clear_endpoints( void ){
-                _alloc.destroy( _begin );
-                _alloc.deallocate( _begin, 1 );
-                _alloc.destroy( _end );
-                _alloc.deallocate( _end, 1 );
+				_alloc.destroy( _begin );
+				_alloc.deallocate( _begin, 1 );
+				_alloc.destroy( _end );
+				_alloc.deallocate( _end, 1 );
 			}
 
 			void erase_node( node_pointer tmp ){

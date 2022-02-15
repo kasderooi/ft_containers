@@ -19,9 +19,9 @@
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
 void print( std::string str, long ft_time, long std_time ){
-    std::cout << BOLDCYAN << str << RESET;
-    std::cout << "\tft " << YELLOW << ft_time;
-    std::cout << RESET <<"\t/ std " << MAGENTA << std_time;
-    std::cout << RESET << "\tft/std = " << BOLDGREEN << (double)(ft_time)/(double)(std_time);
-    std::cout << RESET <<" difference" << std::endl;
+	std::cout << BOLDCYAN << str << RESET;
+	std::cout << "\tft " << YELLOW << ft_time;
+	std::cout << RESET << "\t/ std " << MAGENTA << std_time;
+	std::cout << RESET << "\tft/std = " << BOLDGREEN << ( double ) ( ft_time ) / ( double ) ( std_time );
+	std::cout << RESET << " difference" << std::endl;
 }
