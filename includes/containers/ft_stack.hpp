@@ -5,14 +5,16 @@
 
 namespace ft{
 
-	template< class T, class Container = ft::vector< T > >
+    template< class T, class Container = ft::vector< T > >
 	class stack{
 
 		public:
 
-			typedef T value_type;
 			typedef Container container_type;
-			typedef size_t size_type;
+            typedef typename container_type::value_type         value_type;
+            typedef typename container_type::size_type          size_type;
+            typedef typename container_type::reference          reference;
+            typedef typename container_type::const_reference    const_reference;
 
 		protected:
 
@@ -21,7 +23,11 @@ namespace ft{
 		public:
 
 			//-------(De-)Constructors-------//
-			explicit stack( const container_type& ctnr = container_type()) : _ctnr( ctnr ){ return; }
+			explicit stack( const container_type& ctnr = container_type() ) : _ctnr( ctnr ){ return; }
+
+			stack( const stack& ctnr ) : _ctnr( ctnr._ctnr ){ return; }
+
+			~stack( void ){ return; }
 
 			//-------Capacity-------//
 			bool empty( void ) const{ return _ctnr.empty(); }

@@ -1,11 +1,12 @@
 #ifndef FT_MAP_HPP
 #define FT_MAP_HPP
 
-#include "ft_pair.hpp"
-#include "AVLtree.hpp"
-#include "utils.hpp"
-#include "BidirectionalIterator.hpp"
-#include "ReverseIterator.hpp"
+#include <memory>
+#include "../utils/ft_pair.hpp"
+#include "../utils/AVLtree.hpp"
+#include "../utils/utils.hpp"
+#include "../iterators/BidirectionalIterator.hpp"
+#include "../iterators/ReverseIterator.hpp"
 
 namespace ft{
 
@@ -55,7 +56,7 @@ namespace ft{
 
 			typedef value_compare nestedfunctionclass;
 
-		private:
+		protected:
 
 			node_alloc _alloc;
 			size_type _size;
@@ -77,7 +78,7 @@ namespace ft{
 			map( InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
 				 const allocator_type& alloc = allocator_type()) : _alloc( alloc ), _size( 0 ), _root( NULL ),
 																   _begin( NULL ), _end( NULL ), _compare( comp ){
-				InputIterator tmp = first;
+			    InputIterator tmp = first;
 				set_endpoints();
 				while ( tmp != last ){
 					this->insert( *tmp );
@@ -95,10 +96,7 @@ namespace ft{
 
 			~map( void ){
 				clear();
-				_alloc.destroy( _begin );
-				_alloc.deallocate( _begin, 1 );
-				_alloc.destroy( _end );
-				_alloc.deallocate( _end, 1 );
+                clear_endpoints();
 				return;
 			}
 
@@ -106,7 +104,7 @@ namespace ft{
 			map& operator=( const map& original ){
 				clear();
 				_alloc = original._alloc;
-				insert( original.begin(), original.end());
+				this->insert( original.begin(), original.end());
 				return *this;
 			}
 
@@ -204,10 +202,10 @@ namespace ft{
 
 			template< class InputIterator >
 			void insert( InputIterator first, InputIterator last,
-						 typename ft::enable_if< !is_same< InputIterator, value_type >::value, int >::type = 0 ){
+						 typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ){
 				InputIterator it = first;
 				while ( it != last ){
-					insert( *it );
+					this->insert( *it );
 					it++;
 				}
 			}
@@ -217,7 +215,7 @@ namespace ft{
 			}
 
 			size_type erase( const key_type& key ){
-				if ( !_root || !key )
+				if ( !_root )
 					return 0;
 				node_pointer tmp = _root->find_node( ft::make_pair( key, mapped_type()), _compare );
 				if ( !tmp )
@@ -329,10 +327,14 @@ namespace ft{
 
 			pair< const_iterator, const_iterator > equal_range( const key_type& key ) const{
 				const_iterator it = lower_bound( key );
-				if ( _compare( key, it->first ))
-					return ft::make_pair( it, it );
-				return ft::make_pair( it, ++it );
+                if ( _compare( key, it->first ))
+                    return ft::make_pair( it, it );
+                return ft::make_pair( it, ++it );
 			}
+
+            allocator_type get_allocator() const{
+                return _alloc;
+            }
 
 			//-------Operational overloads-------//
 		private:
@@ -356,6 +358,13 @@ namespace ft{
 				_end->_parent = _begin;
 				_end->_begin = _begin;
 				_end->_end = _end;
+			}
+
+			void clear_endpoints( void ){
+                _alloc.destroy( _begin );
+                _alloc.deallocate( _begin, 1 );
+                _alloc.destroy( _end );
+                _alloc.deallocate( _end, 1 );
 			}
 
 			void erase_node( node_pointer tmp ){
@@ -384,10 +393,6 @@ namespace ft{
 					_root = tmp_left;
 					_root = _root->insert_node( tmp_right, _compare );
 				}
-			}
-
-			allocator_type get_allocator() const{
-				return _alloc;
 			}
 
 	};

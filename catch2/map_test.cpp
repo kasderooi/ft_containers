@@ -1,9 +1,7 @@
 #include "catch.hpp"
-#include "ft_map.hpp"
+#include "../includes/containers/ft_map.hpp"
 #include <map>
-
-#define MAX_VAL 2345
-
+#include <iostream>
 
 TEST_CASE( "map iterators", "[map]" ){
 	ft::map< char, int > ft_map1;
@@ -26,19 +24,19 @@ TEST_CASE( "map iterators", "[map]" ){
 	std_pair_ret = std_map1.insert( std::pair< char, int >( 'a', 3 ));
 	ft_begin = ft_map1.begin();
 	std_begin = std_map1.begin();
-	SECTION( "ret test" ){
+	SECTION( "ret catch2" ){
 		REQUIRE( ft_pair_ret.first->first == std_pair_ret.first->first );
 		REQUIRE( ft_pair_ret.second == std_pair_ret.second );
 	}
 	ft_it = ft_map1.insert( ft_begin, ft::pair< char, int >( 'b', 2 ));
 	std_it = std_map1.insert( std_begin, std::pair< char, int >( 'b', 2 ));
-	SECTION( "ret test" ){
+	SECTION( "ret catch2" ){
 		REQUIRE( ft_it->first == std_it->first );
 		REQUIRE( ft_it->second == std_it->second );
 	}
 	ft_it = ft_map1.insert( ft_begin, ft::pair< char, int >( 'b', 2 ));
 	std_it = std_map1.insert( std_begin, std::pair< char, int >( 'b', 2 ));
-	SECTION( "ret test" ){
+	SECTION( "ret catch2" ){
 		REQUIRE( ft_it->first == std_it->first );
 		REQUIRE( ft_it->second == std_it->second );
 	}
@@ -52,12 +50,12 @@ TEST_CASE( "map iterators", "[map]" ){
 	std_map1.insert( std_map2.begin(), std_map2.end());
 	ft_size_ret = ft_map1.erase( 'z' );
 	std_size_ret = ft_map1.erase( 'z' );
-	SECTION( "ret test" ){
+	SECTION( "ret catch2" ){
 		REQUIRE( ft_size_ret == std_size_ret );
 	}
 	ft_size_ret = ft_map1.erase( 'z' );
 	std_size_ret = ft_map1.erase( 'z' );
-	SECTION( "ret test" ){
+	SECTION( "ret catch2" ){
 		REQUIRE( ft_size_ret == std_size_ret );
 	}
 	ft_map1.erase( --ft_map1.end());
@@ -142,7 +140,7 @@ TEST_CASE( "map iterators", "[map]" ){
 			REQUIRE( ft_map5.upper_bound( ch )->first == std_map5.upper_bound( ch )->first );
 		}
 	}SECTION( "equal range" ){
-		for ( char ch = 'a'; ch <= 'y'; ch++ ){
+		for ( char ch = 'a'; ch <= 'x'; ch++ ){
 			ft::pair< ft::map< char, int >::iterator, ft::map< char, int >::iterator > ft_pair = ft_map5.equal_range(
 					ch );
 			std::pair< std::map< char, int >::iterator, std::map< char, int >::iterator > std_pair = std_map5.equal_range(

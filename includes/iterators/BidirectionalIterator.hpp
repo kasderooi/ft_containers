@@ -1,7 +1,10 @@
 #ifndef FT_CONTAINERS_BidirectionalIterator_HPP
 #define FT_CONTAINERS_BidirectionalIterator_HPP
 
-#include "IteratorUtils.hpp"
+#include <cstddef>
+#include "../utils/IteratorUtils.hpp"
+#include "../utils/utils.hpp"
+#include "../utils/AVLtree.hpp"
 
 namespace ft{
 

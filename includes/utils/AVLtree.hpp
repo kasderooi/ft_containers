@@ -25,9 +25,9 @@ namespace ft{
 		explicit AVLtree( void ) : _input(), _height( 1 ), _parent( NULL ), _left( NULL ), _right( NULL ),
 								   _begin( NULL ), _end( NULL ){ return; }
 
-		explicit AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ), _begin( NULL ),
+		explicit AVLtree( value_type input ) : _input( input ), _height( 1 ), _parent( NULL ),
 											   _left( NULL ),
-											   _right( NULL ), _end( NULL ){ return; }
+											   _right( NULL ), _begin( NULL ), _end( NULL ){ return; }
 
 		AVLtree( const AVLtree< Pair >& original ){
 			this = original;

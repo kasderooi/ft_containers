@@ -3,14 +3,14 @@
 //
 
 #include "catch.hpp"
-#include "ft_stack.hpp"
-#include "ft_vector.hpp"
+#include "../includes/containers/ft_stack.hpp"
+#include "../includes/containers/ft_vector.hpp"
 #include <stack>
 #include <vector>
 
 #define MAX_VAL 2345
 
-TEST_CASE( "vector iterators", "[vector]" ){
+TEST_CASE( "stack", "[stack]" ){
 	std::deque< int > mydeque( 3, 100 );
 	std::vector< int > std_vec1( 3, 100 );
 	ft::vector< int > ft_vec1( 3, 100 );

@@ -2,9 +2,10 @@
 #define FT_vector_HPP
 
 #include <exception>
-#include "RandomAccessIterator.hpp"
-#include "ReverseIterator.hpp"
-#include "utils.hpp"
+#include <memory>
+#include "../iterators/RandomAccessIterator.hpp"
+#include "../iterators/ReverseIterator.hpp"
+#include "../utils/utils.hpp"
 
 namespace ft{
 
@@ -48,7 +49,7 @@ namespace ft{
 
 			template< class InputIterator >
 			vector( InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
-					typename ft::enable_if< !is_same< InputIterator, value_type >::value, int >::type = 0 ) :
+					typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ) :
 					_size( last - first ), _capacity( _size ), _alloc( alloc ), _vector( _alloc.allocate( _capacity )){
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.construct( &_vector[i], *first++ );
@@ -67,7 +68,7 @@ namespace ft{
 
 			//-------Assignment Operator-------//
 			vector< T, Alloc >& operator=( const vector& original ){
-				for ( int i = 0; i < _size; i++ )
+				for ( size_type i = 0; i < _size; i++ )
 					_alloc.destroy( &_vector[i] );
 				_alloc.deallocate( _vector, _capacity );
 				_alloc = original._alloc;
@@ -182,7 +183,7 @@ namespace ft{
 			//-------Modifiers-------//
 			template< class InputIterator >
 			void assign( InputIterator first, InputIterator last,
-						 typename ft::enable_if< !is_same< InputIterator, value_type >::value, int >::type = 0 ){
+						 typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ){
 				resize( last - first );
 				for ( size_type i = 0; first < last; i++ ){
 					_vector[i] = *first;
@@ -224,7 +225,7 @@ namespace ft{
 
 			template< class InputIterator >
 			void insert( iterator position, InputIterator first, InputIterator last,
-						 typename ft::enable_if< !is_same< InputIterator, value_type >::value, int >::type = 0 ){
+						 typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ){
 				difference_type index( 0 ), diff = distance( position, end());
 				size_type n = last - first;
 				if ( _capacity > 0 )
@@ -341,7 +342,7 @@ namespace ft{
 	bool operator>=( const vector< T, Alloc >& lhs, const vector< T, Alloc >& rhs ){ return !( lhs < rhs ); }
 
 	template< class T, class Alloc >
-	void swap( vector< T, Alloc >& x, vector< T, Alloc >& y ){ x.swap( y ); };
+	void swap( vector< T, Alloc >& x, vector< T, Alloc >& y ){ x.swap( y ); }
 }
 
 #endif //FT_CONTAINERS_FT_vector_HPP
