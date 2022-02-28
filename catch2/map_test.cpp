@@ -120,13 +120,13 @@ TEST_CASE( "map iterators", "[map]" ){
 		REQUIRE( ft_map4.size() == std_map4.size());
 		REQUIRE( ft_map4.empty() == std_map4.empty());
 	}
-    ft::map< char, int >::const_iterator const_it_ft0 = ft_map5.begin();
-    ft::map< char, int >::iterator it_ft0 = ft_map5.begin();
-    ft::map< char, int >::const_reverse_iterator const_rit_ft0 = ft_map5.rbegin();
-    ft::map< char, int >::reverse_iterator rit_ft0 = ft_map5.rbegin();
+	ft::map< char, int >::const_iterator const_it_ft0 = ft_map5.begin();
+	ft::map< char, int >::iterator it_ft0 = ft_map5.begin();
+	ft::map< char, int >::const_reverse_iterator const_rit_ft0 = ft_map5.rbegin();
+	ft::map< char, int >::reverse_iterator rit_ft0 = ft_map5.rbegin();
 	SECTION( "copy/range constructer & assignment operator" ){
-	    REQUIRE( *const_it_ft0 == *it_ft0 );
-        REQUIRE( *const_rit_ft0 == *rit_ft0 );
+		REQUIRE( *const_it_ft0 == *it_ft0 );
+		REQUIRE( *const_rit_ft0 == *rit_ft0 );
 		REQUIRE( ft_map5.size() == std_map5.size());
 		REQUIRE( ft_map5.begin()->first == std_map5.begin()->first );
 		REQUIRE( ft_map5.begin()->second == std_map5.begin()->second );
@@ -135,20 +135,18 @@ TEST_CASE( "map iterators", "[map]" ){
 		REQUIRE(( --ft_map5.end())->first == ( --std_map5.end())->first );
 		REQUIRE(( --ft_map5.end())->second == ( --std_map5.end())->second );
 		REQUIRE(( ft_map5.rbegin())->first == ( std_map5.rbegin())->first );
-        REQUIRE(( ft_map5.rbegin())->second == ( std_map5.rbegin())->second );
+		REQUIRE(( ft_map5.rbegin())->second == ( std_map5.rbegin())->second );
 		REQUIRE(( ++ft_map5.rbegin())->first == ( ++std_map5.rbegin())->first );
 		REQUIRE(( ++ft_map5.rbegin())->second == ( ++std_map5.rbegin())->second );
 		REQUIRE(( --ft_map5.rend())->first == ( --std_map5.rend())->first );
-        REQUIRE(( --ft_map5.rend())->second == ( --std_map5.rend())->second );
-	}
-	SECTION( "count & upper/lower bound" ){
+		REQUIRE(( --ft_map5.rend())->second == ( --std_map5.rend())->second );
+	} SECTION( "count & upper/lower bound" ){
 		for ( char ch = 'a'; ch <= 'x'; ch++ ){
 			REQUIRE( ft_map5.count( ch ) == std_map5.count( ch ));
 			REQUIRE( ft_map5.lower_bound( ch )->first == std_map5.lower_bound( ch )->first );
 			REQUIRE( ft_map5.upper_bound( ch )->first == std_map5.upper_bound( ch )->first );
 		}
-	}
-	SECTION( "equal range" ){
+	} SECTION( "equal range" ){
 		for ( char ch = 'a'; ch <= 'x'; ch++ ){
 			ft::pair< ft::map< char, int >::iterator, ft::map< char, int >::iterator > ft_pair = ft_map5.equal_range(
 					ch );

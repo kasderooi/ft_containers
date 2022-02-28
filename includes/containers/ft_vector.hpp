@@ -40,7 +40,8 @@ namespace ft{
 			explicit vector( const allocator_type& alloc = allocator_type()) :
 					_size( 0 ), _capacity( 0 ), _alloc( alloc ), _vector( NULL ){ return; }
 
-			explicit vector( size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
+			explicit vector( size_type n, const value_type& val = value_type(),
+							 const allocator_type& alloc = allocator_type()) :
 					_size( n ), _capacity( n ), _alloc( alloc ), _vector( _alloc.allocate( _capacity )){
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.construct( &_vector[i], val );
@@ -50,7 +51,8 @@ namespace ft{
 			template< class InputIterator >
 			vector( InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 					typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ) :
-					_size( distance( first, last ) ), _capacity( _size ), _alloc( alloc ), _vector( _alloc.allocate( _capacity )){
+					_size( distance( first, last )), _capacity( _size ), _alloc( alloc ),
+					_vector( _alloc.allocate( _capacity )){
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.construct( &_vector[i], *first++ );
 				return;
@@ -62,8 +64,8 @@ namespace ft{
 			}
 
 			~vector( void ){
-                clear();
-                _alloc.deallocate( _vector, _capacity );
+				clear();
+				_alloc.deallocate( _vector, _capacity );
 				return;
 			}
 
@@ -179,7 +181,7 @@ namespace ft{
 			template< class InputIterator >
 			void assign( InputIterator first, InputIterator last,
 						 typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ){
-				resize( distance( first, last ) );
+				resize( distance( first, last ));
 				for ( size_type i = 0; first < last; i++ ){
 					_vector[i] = *first;
 					first++;
@@ -296,11 +298,11 @@ namespace ft{
 			allocator_type get_allocator( void ) const{ return _alloc; }
 
 			//-------Relational operators-------//
-            template< class T1, class Alloc1 >
-            friend bool operator==( const vector< T1, Alloc1 >& lhs, const vector< T1, Alloc1 >& rhs );
+			template< class T1, class Alloc1 >
+			friend bool operator==( const vector< T1, Alloc1 >& lhs, const vector< T1, Alloc1 >& rhs );
 
-            template< class T1, class Alloc1 >
-            friend bool operator<( const vector< T1, Alloc1 >& lhs, const vector< T1, Alloc1 >& rhs );
+			template< class T1, class Alloc1 >
+			friend bool operator<( const vector< T1, Alloc1 >& lhs, const vector< T1, Alloc1 >& rhs );
 
 	};
 

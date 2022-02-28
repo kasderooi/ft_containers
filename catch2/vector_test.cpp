@@ -7,19 +7,19 @@
 TEST_CASE( "vector iterators", "[vector]" ){
 	ft::vector< int > ft1( MAX_VAL );
 	std::vector< int > std1( MAX_VAL );
-    ft::vector< int >::iterator it_ft1 = ft1.begin();
-    for ( std::vector< int >::iterator it_std1 = std1.begin(); it_std1 < std1.end(); it_std1++ ){
+	ft::vector< int >::iterator it_ft1 = ft1.begin();
+	for ( std::vector< int >::iterator it_std1 = std1.begin(); it_std1 < std1.end(); it_std1++ ){
 		*it_std1 = arc4random() % 100;
 		*it_ft1 = *it_std1;
 		it_ft1++;
 	}
-    ft::vector< int >::const_iterator const_it_ft0 = ft1.begin();
-    ft::vector< int >::iterator it_ft0 = ft1.begin();
-    ft::vector< int >::const_reverse_iterator const_rit_ft0 = ft1.rbegin();
-    ft::vector< int >::reverse_iterator rit_ft0 = ft1.rbegin();
+	ft::vector< int >::const_iterator const_it_ft0 = ft1.begin();
+	ft::vector< int >::iterator it_ft0 = ft1.begin();
+	ft::vector< int >::const_reverse_iterator const_rit_ft0 = ft1.rbegin();
+	ft::vector< int >::reverse_iterator rit_ft0 = ft1.rbegin();
 	SECTION( "begin/end ++/--" ){
-        REQUIRE( *const_it_ft0 == *it_ft0 );
-        REQUIRE( *const_rit_ft0 == *rit_ft0 );
+		REQUIRE( *const_it_ft0 == *it_ft0 );
+		REQUIRE( *const_rit_ft0 == *rit_ft0 );
 		REQUIRE( *( ft1.begin()) == *( std1.begin()));
 		REQUIRE( *( ft1.begin() + 5 ) == *( std1.begin() + 5 ));
 		REQUIRE( *( ++ft1.begin()) == *( ++std1.begin()));
@@ -56,8 +56,8 @@ TEST_CASE( "vector iterators", "[vector]" ){
 		REQUIRE( std2[MAX_VAL - 1] == *std2.rbegin());
 		REQUIRE( ft2[MAX_VAL - 1] == *ft2.rbegin()-- );
 		REQUIRE( std2[MAX_VAL - 1] == *std2.rbegin()-- );
-		REQUIRE( *( 3 + ft2.rbegin() ) == *( 3 + std2.rbegin() ) );
-		REQUIRE( (ft2.rend() - ft2.rbegin()) == (std2.rend() - std2.rbegin()));
+		REQUIRE( *( 3 + ft2.rbegin()) == *( 3 + std2.rbegin()));
+		REQUIRE(( ft2.rend() - ft2.rbegin()) == ( std2.rend() - std2.rbegin()));
 	}
 }
 

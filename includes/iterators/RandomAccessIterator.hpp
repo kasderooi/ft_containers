@@ -7,11 +7,11 @@ namespace ft{
 
 
 	template< class T, class Pointer = T*, class Reference = T&, class Category = ft::random_access_iterator_tag >
-	class RandomAccessIterator {
+	class RandomAccessIterator{
 
 		public:
 
-            typedef RandomAccessIterator< T, Pointer, Reference > iterator;
+			typedef RandomAccessIterator< T, Pointer, Reference > iterator;
 			typedef T value_type;
 			typedef ptrdiff_t difference_type;
 			typedef Pointer pointer;
@@ -30,7 +30,7 @@ namespace ft{
 			RandomAccessIterator( pointer ptr ) : _ptr( ptr ){ return; }
 
 			template< class U >
-			RandomAccessIterator( const RandomAccessIterator<U, U*, U&> &original ): _ptr( original.base() ){ return; }
+			RandomAccessIterator( const RandomAccessIterator< U, U*, U& >& original ): _ptr( original.base()){ return; }
 
 			~RandomAccessIterator( void ){ return; }
 

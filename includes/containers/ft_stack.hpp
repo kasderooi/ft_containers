@@ -40,7 +40,7 @@ namespace ft{
 
 			void pop( void ){ _ctnr.pop_back(); }
 
-            //-------Relational operators-------//
+			//-------Relational operators-------//
 			template< class T1, class Container1 >
 			friend bool operator==( const stack< T1, Container1 >& lhs, const stack< T1, Container1 >& rhs );
 
