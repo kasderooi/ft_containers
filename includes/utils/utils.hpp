@@ -98,18 +98,6 @@ namespace ft{
 		static const bool value = true;
 	};
 	template<>
-	struct is_integral< float >{
-		static const bool value = true;
-	};
-	template<>
-	struct is_integral< double >{
-		static const bool value = true;
-	};
-	template<>
-	struct is_integral< long double >{
-		static const bool value = true;
-	};
-	template<>
 	struct is_integral< wchar_t >{
 		static const bool value = true;
 	};

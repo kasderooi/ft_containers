@@ -50,7 +50,7 @@ namespace ft{
 			template< class InputIterator >
 			vector( InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 					typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ) :
-					_size( last - first ), _capacity( _size ), _alloc( alloc ), _vector( _alloc.allocate( _capacity )){
+					_size( distance( first, last ) ), _capacity( _size ), _alloc( alloc ), _vector( _alloc.allocate( _capacity )){
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.construct( &_vector[i], *first++ );
 				return;
@@ -83,33 +83,27 @@ namespace ft{
 
 			//-------Iterators-------//
 			iterator begin( void ){
-				iterator ret( _vector );
-				return ret;
+				return iterator( _vector );
 			}
 
 			const_iterator begin( void ) const{
-				const_iterator ret( _vector );
-				return ret;
+				return const_iterator( _vector );
 			}
 
 			iterator end( void ){
-				iterator ret( &_vector[_size] );
-				return ret;
+				return iterator( &_vector[_size] );
 			}
 
 			const_iterator end( void ) const{
-				const_iterator ret( &_vector[_size] );
-				return ret;
+				return const_iterator( &_vector[_size] );
 			}
 
 			reverse_iterator rbegin( void ){
-				reverse_iterator ret( &_vector[_size - 1] );
-				return ret;
+				return reverse_iterator( &_vector[_size - 1] );
 			}
 
 			const_reverse_iterator rbegin( void ) const{
-				const_reverse_iterator ret( &_vector[_size - 1] );
-				return ret;
+				return const_reverse_iterator( &_vector[_size - 1] );
 			}
 
 			reverse_iterator rend( void ){
@@ -185,7 +179,7 @@ namespace ft{
 			template< class InputIterator >
 			void assign( InputIterator first, InputIterator last,
 						 typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ){
-				resize( last - first );
+				resize( distance( first, last ) );
 				for ( size_type i = 0; first < last; i++ ){
 					_vector[i] = *first;
 					first++;
@@ -228,7 +222,7 @@ namespace ft{
 			void insert( iterator position, InputIterator first, InputIterator last,
 						 typename ft::enable_if< !is_integral< InputIterator >::value, int >::type = 0 ){
 				difference_type index( 0 ), diff = distance( position, end());
-				size_type n = last - first;
+				size_type n = distance( first, last );
 				if ( _capacity > 0 )
 					reserve( _size + n > _capacity ? 2 * _capacity : _size );
 				else

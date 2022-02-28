@@ -34,9 +34,12 @@ namespace ft{
 
 			BidirectionalIterator( node ptr ) : _ptr( ptr ){ return; }
 
-			BidirectionalIterator( const iterator& original ) : _ptr( original._ptr ){ return; }
+			template< class U >
+            BidirectionalIterator( const BidirectionalIterator<U, U*, U&> &original ): _ptr(original.base()){ return; }
 
 			~BidirectionalIterator( void ){ return; }
+
+			node base( void ) const{ return _ptr; }
 
 			iterator& operator=( const iterator& original ){
 				this->_ptr = original._ptr;
