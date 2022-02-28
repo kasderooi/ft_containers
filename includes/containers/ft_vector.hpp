@@ -290,7 +290,8 @@ namespace ft{
 			}
 
 			void clear( void ){
-				_alloc.destroy( _vector );
+				if( _size )
+					_alloc.destroy( _vector );
 				_size = 0;
 			}
 
