@@ -4,12 +4,17 @@
 
 #define MAX_VAL 2345
 
+//No viable conversion from
+//'RandomAccessIterator<[...], ft::vector<int, std::__1::allocator<int>>::pointer, ft::vec    tor<int, std::__1::allocator<int>>::reference>' to
+//'RandomAccessIterator<[...], ft::vector<int, std::__1::allocator<int>>::const_pointer, ft::vector<int, std::__1::allocator<int>>::const_reference>'
+
 
 TEST_CASE( "vector iterators", "[vector]" ){
 	ft::vector< int > ft1( MAX_VAL );
 	std::vector< int > std1( MAX_VAL );
 	ft::vector< int >::iterator it_ft1 = ft1.begin();
-	for ( std::vector< int >::iterator it_std1 = std1.begin(); it_std1 < std1.end(); it_std1++ ){
+//    ft::vector< int >::const_iterator it_ft5 = ft1.begin();
+    for ( std::vector< int >::iterator it_std1 = std1.begin(); it_std1 < std1.end(); it_std1++ ){
 		*it_std1 = arc4random() % 100;
 		*it_ft1 = *it_std1;
 		it_ft1++;

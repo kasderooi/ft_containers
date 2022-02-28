@@ -25,10 +25,6 @@ namespace ft{
 			//-------(De-)Constructors-------//
 			explicit stack( const container_type& ctnr = container_type()) : _ctnr( ctnr ){ return; }
 
-			stack( const stack& ctnr ) : _ctnr( ctnr._ctnr ){ return; }
-
-			~stack( void ){ return; }
-
 			//-------Capacity-------//
 			bool empty( void ) const{ return _ctnr.empty(); }
 
@@ -44,7 +40,7 @@ namespace ft{
 
 			void pop( void ){ _ctnr.pop_back(); }
 
-			//-------Operational overloads-------//
+            //-------Relational operators-------//
 			template< class T1, class Container1 >
 			friend bool operator==( const stack< T1, Container1 >& lhs, const stack< T1, Container1 >& rhs );
 

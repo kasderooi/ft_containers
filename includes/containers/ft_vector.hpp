@@ -18,12 +18,12 @@ namespace ft{
 			typedef Alloc allocator_type;
 			typedef size_t size_type;
 			typedef ptrdiff_t difference_type;
-			typedef value_type* pointer;
-			typedef value_type& reference;
-			typedef const value_type* const_pointer;
-			typedef const value_type& const_reference;
-			typedef typename ft::RandomAccessIterator< T, T*, T& > iterator;
-			typedef typename ft::RandomAccessIterator< T, const T*, const T& > const_iterator;
+			typedef typename allocator_type::pointer pointer;
+			typedef typename allocator_type::reference reference;
+			typedef typename allocator_type::const_pointer const_pointer;
+			typedef typename allocator_type::const_reference const_reference;
+			typedef typename ft::RandomAccessIterator< T, pointer, reference > iterator;
+			typedef typename ft::RandomAccessIterator< T, const_pointer, const_reference > const_iterator;
 			typedef typename ft::ReverseIterator< iterator > reverse_iterator;
 			typedef typename ft::ReverseIterator< const_iterator > const_reverse_iterator;
 
@@ -37,10 +37,10 @@ namespace ft{
 		public:
 
 			//-------(De-)Constructors-------//
-			vector( const allocator_type& alloc = allocator_type()) :
+			explicit vector( const allocator_type& alloc = allocator_type()) :
 					_size( 0 ), _capacity( 0 ), _alloc( alloc ), _vector( NULL ){ return; }
 
-			vector( size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
+			explicit vector( size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) :
 					_size( n ), _capacity( n ), _alloc( alloc ), _vector( _alloc.allocate( _capacity )){
 				for ( size_type i = 0; i < _size; i++ )
 					_alloc.construct( &_vector[i], val );
@@ -62,7 +62,8 @@ namespace ft{
 			}
 
 			~vector( void ){
-				_alloc.deallocate( _vector, _capacity );
+                clear();
+                _alloc.deallocate( _vector, _capacity );
 				return;
 			}
 
@@ -299,6 +300,13 @@ namespace ft{
 
 			//-------Allocator-------//
 			allocator_type get_allocator( void ) const{ return _alloc; }
+
+			//-------Relational operators-------//
+            template< class T1, class Alloc1 >
+            friend bool operator==( const vector< T1, Alloc1 >& lhs, const vector< T1, Alloc1 >& rhs );
+
+            template< class T1, class Alloc1 >
+            friend bool operator<( const vector< T1, Alloc1 >& lhs, const vector< T1, Alloc1 >& rhs );
 
 	};
 
